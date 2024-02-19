@@ -8,6 +8,7 @@ const {
   loginValidation,
 } = require("../validations/userValidation");
 const { validateAsync } = require("@hapi/joi/lib/base");
+const authorization = require("../middlewares/authMiddleware");
 authRouter.use(express.json());
 authRouter.post("/login", async (req, res) => {
   try {
@@ -78,6 +79,33 @@ authRouter.post("/register", async (req, res) => {
       console.log(error);
       return res.status(500).send("Internal server error");
     }
+  }
+});
+authRouter.patch("/update", authorization, async (req, res) => {
+  try {
+    const { name, oldPassword, newPassword } = req.body;
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if (oldPassword) {
+      const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ error: "Old password is incorrect" });
+      }
+      if (newPassword) {
+        const newHashedPassword = await bcrypt.hashSync(newPassword, 10);
+        user.password = newHashedPassword;
+      }
+    }
+    if (name) {
+      user.name = name;
+    }
+    await user.save();
+    res.status(200).json({ status: "success" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
