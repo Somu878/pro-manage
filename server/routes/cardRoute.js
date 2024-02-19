@@ -3,12 +3,75 @@ const cardRouter = express.Router();
 const authorization = require("../middlewares/authMiddleware");
 const cardValidation = require("../validations/cardValidation");
 const Card = require("../models/cardmodel");
-cardRouter.get("/", authorization, async (req, res) => {
+const {
+  startOfWeek,
+  endOfWeek,
+  endOfDay,
+  startOfDay,
+  startOfMonth,
+  endOfMonth,
+} = require("date-fns");
+// cardRouter.get("/by-status/:status", authorization, async (req, res) => {
+//   try {
+//     const { status } = req.params;
+//     const statusValues = ["backlog", "todo", "progress", "done"];
+//     if (!statusValues.includes(status)) {
+//       return res
+//         .status(400)
+//         .json({ status: "invalid", message: "Invalid Status value" });
+//     }
+//     const cardDataByStatus = await Card.find({ status, refUserId: req.userId });
+//     res.status(201).send({ data: cardDataByStatus });
+//   } catch (error) {
+//     res.status(400).send("Internal server error");
+//   }
+// });
+cardRouter.get("/by-date/:datePreference", authorization, async (req, res) => {
   try {
-    const data = await Card.find();
-    res.status(201).send(data);
+    const { datePreference } = req.params;
+    const currentDate = new Date();
+    let startDate, endDate;
+    switch (datePreference) {
+      case "today":
+        startDate = startOfDay(currentDate);
+        endDate = endOfDay(currentDate);
+        break;
+      case "this-week":
+        startDate = startOfWeek(currentDate, { weekStartsOn: 1 });
+        endDate = endOfWeek(currentDate, { weekStartsOn: 1 });
+        break;
+      case "this-month":
+        startDate = startOfMonth(currentDate);
+        endDate = endOfMonth(currentDate);
+        break;
+      default:
+        return res.status(400).json({ error: "Invalid date preference" });
+    }
+    const cardsByDatePreference = await Card.find({
+      createdAt: { $gte: startDate, $lt: endDate },
+      refUserId: req.userId,
+    });
+
+    res.status(200).json({ data: cardsByDatePreference });
   } catch (error) {
-    res.status(400).send("Internal server error");
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+cardRouter.get("/:cardId", async (req, res) => {
+  try {
+    const { cardId } = req.params;
+    const cardData = await Card.findById(cardId);
+    if (!cardData) {
+      return res.status(404).json({
+        message: "No card exists with that Id",
+      });
+    }
+    res.status(200).json({ data: cardData });
+  } catch (error) {
+    console.log(error);
+    res.status(401).send("Internal Server Error");
   }
 });
 cardRouter.post("/add", authorization, async (req, res) => {
