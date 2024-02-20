@@ -1,0 +1,81 @@
+.registerContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 10vh auto;
+  align-items: center;
+  gap: 22px;
+}
+.registerContainer p {
+  font-weight: 600;
+  font-size: 30px;
+}
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.inputGroup input {
+  width: 415px;
+  height: 52px;
+  box-sizing: border-box;
+  border: 1.5px solid #d0d0d0;
+  border-radius: 11px;
+  font-size: 17px;
+  padding-left: 50px;
+}
+.registerBtn {
+  background-color: #17a2b8;
+  width: 415px;
+  height: 48px;
+  border: none;
+  border-radius: 40px;
+  font-size: 18px;
+  color: white;
+  margin-top: 15px;
+}
+.loginBtn {
+  background-color: transparent;
+  color: #17a2b8;
+  width: 415px;
+  height: 48px;
+  border: 1px solid;
+  border-radius: 40px;
+  font-size: 18px;
+  outline: none;
+}
+.registerContainer span {
+  color: #828282;
+  font-size: 16px;
+}
+.userIcon {
+  position: absolute;
+  top: 27.2%;
+  left: 66.5%;
+}
+.postIcon {
+  position: absolute;
+  top: 38%;
+  left: 66.5%;
+}
+.lockIcon1 {
+  position: absolute;
+  left: 66.5%;
+  top: 48.5%;
+}
+.lockIcon2 {
+  position: absolute;
+  left: 66.5%;
+  top: 58.9%;
+}
+.eyeOnIcon1,
+.eyeOffIcon1 {
+  position: absolute;
+  left: 91.8%;
+  top: 49.2%;
+}
+.eyeOnIcon2,
+.eyeOffIcon2 {
+  position: absolute;
+  left: 91.8%;
+  top: 59.7%;
+}

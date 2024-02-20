@@ -1,0 +1,65 @@
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 15vh auto;
+  align-items: center;
+  gap: 22px;
+}
+.loginContainer p {
+  font-weight: 600;
+  font-size: 30px;
+}
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.postIcon {
+  position: absolute;
+  top: 32.3%;
+  left: 66.5%;
+}
+.lockIcon {
+  position: absolute;
+  top: 42.8%;
+  left: 66.5%;
+}
+.eyeOnIcon,
+.eyeOffIcon {
+  position: absolute;
+  top: 43.6%;
+  left: 91.7%;
+}
+.inputGroup input {
+  width: 415px;
+  height: 52px;
+  box-sizing: border-box;
+  border: 1.5px solid #d0d0d0;
+  border-radius: 11px;
+  font-size: 17px;
+  padding-left: 50px;
+}
+.loginBtn {
+  background-color: #17a2b8;
+  width: 415px;
+  height: 48px;
+  border: none;
+  border-radius: 40px;
+  font-size: 18px;
+  color: white;
+  margin-top: 15px;
+}
+.registerBtn {
+  background-color: transparent;
+  color: #17a2b8;
+  width: 415px;
+  height: 48px;
+  border: 1px solid;
+  border-radius: 40px;
+  font-size: 18px;
+  outline: none;
+}
+.loginContainer span {
+  color: #828282;
+  font-size: 16px;
+}
