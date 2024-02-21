@@ -48,8 +48,8 @@ authRouter.post("/register", async (req, res) => {
     const userData = await registerValidation.validateAsync(req.body);
     const userExists = await User.findOne({ email: userData.email });
     if (userExists) {
-      return res.status(409).send({
-        exists: true,
+      return res.status(200).send({
+        status: "exists",
         message:
           "Email already registered, Please login or try different credentials",
       });

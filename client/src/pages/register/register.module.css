@@ -54,28 +54,28 @@
 }
 .postIcon {
   position: absolute;
-  top: 38%;
+  top: 37.7%;
   left: 66.5%;
 }
 .lockIcon1 {
   position: absolute;
   left: 66.5%;
-  top: 48.5%;
+  top: 48%;
 }
 .lockIcon2 {
   position: absolute;
   left: 66.5%;
-  top: 58.9%;
+  top: 58.3%;
 }
 .eyeOnIcon1,
 .eyeOffIcon1 {
   position: absolute;
   left: 91.8%;
-  top: 49.2%;
+  top: 48.6%;
 }
 .eyeOnIcon2,
 .eyeOffIcon2 {
   position: absolute;
   left: 91.8%;
-  top: 59.7%;
+  top: 58.9%;
 }
