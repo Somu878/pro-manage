@@ -1,13 +1,13 @@
 import React from "react";
 import Navabar from "../../components/navbar/Navabar";
-import toast, { Toaster } from "react-hot-toast";
-function Dashboard() {
+
+function Analytics() {
   return (
     <div>
       {/* <Navabar /> */}
-      <div>board</div>
+      <div>analytics</div>
     </div>
   );
 }
 
-export default Dashboard;
+export default Analytics;

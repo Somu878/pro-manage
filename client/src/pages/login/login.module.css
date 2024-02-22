@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
+  margin-bottom: 10px;
 }
 .postIcon {
   position: absolute;

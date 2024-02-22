@@ -6,6 +6,7 @@ import Banner from "../../components/banner/Banner";
 import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
 import { LoginUser } from "../../apis/Auth";
+import toast, { Toaster } from "react-hot-toast";
 function Login() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -26,8 +27,11 @@ function Login() {
     }
     try {
       const response = await LoginUser(loginData.email, loginData.password);
-      localStorage.setItem("token", response.token);
-      if (response.status === "success") {
+      if (response.status === 202) {
+        alert("Invalid password or email not registered");
+      }
+      if (response.status === 200) {
+        localStorage.setItem("token", response?.data?.token);
         navigate("/");
       }
     } catch (error) {
@@ -39,7 +43,7 @@ function Login() {
       <div>
         <Banner />
       </div>
-      <div className={styles.loginContainer}>
+      <form onSubmit={handleLogin} className={styles.loginContainer}>
         <p>Login</p>
         <div className={styles.inputGroup}>
           <MdOutlineLocalPostOffice
@@ -48,7 +52,7 @@ function Login() {
             size={"33px"}
           />
           <input
-            type="text"
+            type="email"
             name="email"
             placeholder="Email"
             required
@@ -82,7 +86,7 @@ function Login() {
             />
           )}
         </div>
-        <button className={styles.loginBtn} onClick={handleLogin}>
+        <button className={styles.loginBtn} type="submit">
           Login
         </button>
         <span>Have no account yet?</span>
@@ -92,7 +96,7 @@ function Login() {
         >
           Register
         </button>
-      </div>
+      </form>
     </div>
   );
 }

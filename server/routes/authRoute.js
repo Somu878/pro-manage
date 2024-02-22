@@ -22,14 +22,11 @@ authRouter.post("/login", async (req, res) => {
     }
     const passwordMatch = await bcrypt.compare(password, userExists.password);
     if (!passwordMatch) {
-      return res.status(200).send({ status: "invalid" });
+      return res.status(202).send({ status: "invalid" });
     }
     const token = jwt.sign({ userId: userExists._id }, process.env.JWT_SECRET);
-    res.status(202).json({
-      status: "success",
+    res.status(200).json({
       token: token,
-      username: userExists.name,
-      id: userExists._id,
     });
   } catch (error) {
     if (error.details) {
@@ -48,8 +45,7 @@ authRouter.post("/register", async (req, res) => {
     const userData = await registerValidation.validateAsync(req.body);
     const userExists = await User.findOne({ email: userData.email });
     if (userExists) {
-      return res.status(200).send({
-        status: "exists",
+      return res.status(202).send({
         message:
           "Email already registered, Please login or try different credentials",
       });
@@ -64,11 +60,8 @@ authRouter.post("/register", async (req, res) => {
       { userId: savedUser._id },
       process.env.JWT_SECRET
     );
-    res.status(201).json({
-      status: "success",
+    res.status(200).json({
       token: token,
-      username: newuser.name,
-      id: newuser._id,
     });
   } catch (error) {
     if (error.details) {
