@@ -1,7 +1,8 @@
 .registerContainer {
   display: flex;
   flex-direction: column;
-  margin: 10vh auto;
+  margin-top: 10vh;
+  margin-left: 40%;
   align-items: center;
   gap: 22px;
 }

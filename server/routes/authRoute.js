@@ -15,8 +15,7 @@ authRouter.post("/login", async (req, res) => {
     const { email, password } = await loginValidation.validateAsync(req.body);
     const userExists = await User.findOne({ email: email });
     if (!userExists) {
-      return res.status(200).json({
-        exists: "false",
+      return res.status(203).json({
         message: "Email not found",
       });
     }

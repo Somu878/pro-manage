@@ -30,6 +30,9 @@ function Login() {
       if (response.status === 202) {
         alert("Invalid password or email not registered");
       }
+      if (response.status === 203) {
+        alert("Email not registered");
+      }
       if (response.status === 200) {
         localStorage.setItem("token", response?.data?.token);
         navigate("/");
@@ -39,10 +42,7 @@ function Login() {
     }
   };
   return (
-    <div style={{ display: "flex" }}>
-      <div>
-        <Banner />
-      </div>
+    <div>
       <form onSubmit={handleLogin} className={styles.loginContainer}>
         <p>Login</p>
         <div className={styles.inputGroup}>

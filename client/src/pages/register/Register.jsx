@@ -76,11 +76,11 @@ function Register() {
   };
 
   return (
-    <div style={{ display: "flex" }}>
+    <div>
       <Toaster position="top-center" reverseOrder={false} />
-      <div>
+      {/* <div>
         <Banner />
-      </div>
+      </div> */}
       <div className={styles.registerContainer}>
         <p>Register</p>
         <form onSubmit={handleRegister}>

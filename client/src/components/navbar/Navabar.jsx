@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./navbar.module.css";
 import logo from "..//../assets/codesandbox.svg";
-import board from "..//../assets/board.svg";
-import analytics from "..//../assets/database.svg";
-import settings from "..//../assets/settings.svg";
 import { IoExitOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-
+import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { FiSettings } from "react-icons/fi";
+import { GoDatabase } from "react-icons/go";
 function Navabar() {
   const [activeLink, setActiveLink] = useState("board");
   const navigate = useNavigate();
@@ -36,7 +35,7 @@ function Navabar() {
             activeLink === "board" ? styles.activeLink : ""
           }`}
         >
-          <img src={board} alt="board" />
+          <MdOutlineSpaceDashboard size={"23px"} color="#707070" />
           <p>Board</p>
         </Link>
         <Link
@@ -45,7 +44,8 @@ function Navabar() {
             activeLink === "analytics" ? styles.activeLink : ""
           }`}
         >
-          <img src={analytics} alt="analytics" />
+          {/* <img src={analytics} alt="analytics" /> */}
+          <GoDatabase size={"23px"} color="#707070" />
           <p>Analytics</p>
         </Link>
         <Link
@@ -54,7 +54,8 @@ function Navabar() {
             activeLink === "settings" ? styles.activeLink : ""
           }`}
         >
-          <img src={settings} alt="settings" />
+          {/* <img src={settings} alt="settings" /> */}
+          <FiSettings size={"23px"} color="#707070" />
           <p>Settings</p>
         </Link>
       </div>
