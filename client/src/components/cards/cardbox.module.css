@@ -1,0 +1,12 @@
+.cardBox {
+  background-color: #f1f7fd;
+  min-width: 29%;
+  height: 75vh;
+  margin-bottom: 15px;
+  border-radius: 7px;
+}
+.cardBoxGroup {
+  margin: 15px;
+  display: flex;
+  justify-content: space-between;
+}
