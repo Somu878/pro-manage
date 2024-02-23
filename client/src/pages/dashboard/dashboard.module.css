@@ -1,0 +1,38 @@
+.dashboardContainer {
+  width: 84vw;
+  padding: 13px;
+}
+.dashboardContainer p {
+  font-family: var(--poppins);
+}
+.date {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  margin-top: -20px;
+  color: #707070;
+  font-size: 16px;
+  font-family: var(--poppins);
+}
+.dropDown {
+  margin-right: 30px;
+  font-weight: 500;
+  font-family: var(--poppins);
+  cursor: pointer;
+}
+.dropDown img {
+  margin-left: 5px;
+}
+.dropDownList {
+  cursor: pointer;
+  position: absolute;
+  top: 16%;
+  left: 88%;
+  width: 100px;
+  border-radius: 7px;
+  padding: 10px;
+  font-size: 15px;
+  font-family: var(--poppins);
+  font-weight: 500;
+  box-shadow: 0px 2px 22px rgba(126, 122, 122, 0.25);
+}

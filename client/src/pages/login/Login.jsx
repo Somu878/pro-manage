@@ -28,10 +28,10 @@ function Login() {
     try {
       const response = await LoginUser(loginData.email, loginData.password);
       if (response.status === 202) {
-        alert("Invalid password or email not registered");
+        alert("Invalid password or email not registered"); //TODO
       }
       if (response.status === 203) {
-        alert("Email not registered");
+        alert("Email not registered"); //TODO
       }
       if (response.status === 200) {
         localStorage.setItem("token", response?.data?.token);
