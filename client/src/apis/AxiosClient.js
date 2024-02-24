@@ -1,11 +1,13 @@
 import axios from "axios";
 import queryString from "query-string";
 
-const baseURL = import.meta.env.VITE_APP_BASE_URL;
+const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+// const getToken = () => localStorage.getItem("token");
 
 const axiosClient = axios.create({
-  baseURL: baseURL,
+  baseURL: baseUrl,
   paramsSerializer: (params) => queryString.stringify({ params }),
+  // withCredentials: true,
 });
 
 axiosClient.interceptors.request.use(async (config) => {
@@ -13,6 +15,7 @@ axiosClient.interceptors.request.use(async (config) => {
     ...config,
     headers: {
       "Content-Type": "application/json",
+      // token: getToken(),
     },
   };
 });
@@ -28,4 +31,5 @@ axiosClient.interceptors.response.use(
     throw err.response;
   }
 );
+
 export default axiosClient;

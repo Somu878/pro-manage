@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 .card {
   background-color: white;
-  margin: 15px;
-  padding: 15px;
+  margin: 10px;
+  padding: 10px;
   border-radius: 15px;
   font-family: var(--poppins);
   z-index: 1;
@@ -20,7 +20,7 @@
 .menu {
   position: absolute;
   top: 20%;
-  left: 58%;
+  left: 60%;
   width: 90px;
   background-color: white;
   box-shadow: 0px 2px 22px rgba(126, 122, 122, 0.25);
@@ -36,7 +36,7 @@
   gap: 5px;
 }
 .btnGroup div {
-  background-color: #dbdbdb;
+  background-color: #eeecec;
   border-radius: 5px;
   padding: 4px;
 }
@@ -44,4 +44,7 @@
   padding: 7px;
   border: 2px solid #e2e2e2;
   border-radius: 8px;
+}
+.card::-webkit-scrollbar-thumb {
+  width: 5px;
 }

@@ -2,7 +2,7 @@
 .navbar {
   width: 15vw;
   height: 100vh;
-  border-right: 0.5px dotted #4391ed;
+  border-right: 1.5px solid #edf5fe;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

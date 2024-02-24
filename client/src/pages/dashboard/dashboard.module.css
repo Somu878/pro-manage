@@ -27,8 +27,8 @@
   background-color: white;
   cursor: pointer;
   position: absolute;
-  top: 18%;
-  left: 88%;
+  top: 17.1%;
+  left: 89%;
   width: 100px;
   border-radius: 7px;
   padding: 10px;
@@ -62,9 +62,6 @@
   justify-content: space-between;
 }
 
-::-webkit-scrollbar {
-  height: 10px;
-}
 ::-webkit-scrollbar-thumb {
   background: #9cb7c5;
   border-radius: 15px;

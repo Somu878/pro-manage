@@ -11,7 +11,7 @@
   justify-content: space-between;
 }
 .cardList {
-  height: 67vh;
+  height: 68vh;
   overflow-y: auto;
 }
 .cardList::-webkit-scrollbar-track {

@@ -11,11 +11,17 @@ function CardBox({ statusName }) {
         <div style={{ fontWeight: "600" }}>{statusName}</div>
         <div>
           {statusName === "To-do" ? <IoIosAdd size={"23px"} /> : <></>}
-          <VscCollapseAll size={"20px"} color="#767575" onClick={() => {}} />
+          <VscCollapseAll
+            size={"20px"}
+            color="#767575"
+            onClick={() => {
+              setCollapse(false);
+            }}
+          />
         </div>
       </div>
       <div className={styles.cardList}>
-        {/* <Card
+        <Card
           id={"1"}
           priority="low"
           title="test title2"
@@ -26,7 +32,20 @@ function CardBox({ statusName }) {
           dueDate="29th Feb"
           status={statusName}
           collapse={collapse}
-        /> */}
+          handleCollapse={() => setCollapse(true)}
+        />
+        <Card
+          id={"1"}
+          priority="low"
+          title="test title2"
+          tasks={[
+            { _id: 1, content: "njnssdcs", isDone: false },
+            { _id: 2, content: "sdsad asada", isDone: false },
+          ]}
+          dueDate="29th Feb"
+          status={statusName}
+          collapse={collapse}
+        />
       </div>
     </div>
   );

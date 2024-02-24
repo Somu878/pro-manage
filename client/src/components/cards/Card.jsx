@@ -3,7 +3,16 @@ import styles from "./card.module.css";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import { TbDots } from "react-icons/tb";
 import { GoDotFill } from "react-icons/go";
-function Card({ id, priority, title, tasks, dueDate, status, collapse }) {
+function Card({
+  id,
+  priority,
+  title,
+  tasks,
+  dueDate,
+  status,
+  collapse,
+  handleCollapse,
+}) {
   const [showTasks, setShowTasks] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const priorities = {
@@ -72,9 +81,10 @@ function Card({ id, priority, title, tasks, dueDate, status, collapse }) {
           className={styles.icon}
           onClick={() => {
             setShowTasks(!showTasks);
+            handleCollapse();
           }}
         >
-          {showTasks ? (
+          {showTasks && collapse ? (
             <RiArrowDropUpLine size={"23px"} />
           ) : (
             <RiArrowDropDownLine size={"23px"} />

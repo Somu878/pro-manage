@@ -1,5 +1,7 @@
 .settingsContainer {
   margin-left: 40px;
+  position: relative;
+  z-index: 1;
 }
 .settingsContainer form {
   display: flex;
@@ -21,34 +23,37 @@
   padding-right: 43px;
 }
 .Icon1 {
+  z-index: 2;
   position: absolute;
-  top: 15%;
-  left: 18.5%;
+  top: 31%;
+  left: 1%;
   color: #828282;
 }
 .Icon2,
 .eyeOffIcon1,
 .eyeOnIcon1 {
+  z-index: 2;
   position: absolute;
-  top: 23.7%;
-  left: 18.5%;
+  top: 49.5%;
+  left: 1.5%;
   color: #828282;
 }
 .Icon3,
 .eyeOffIcon2,
 .eyeOnIcon2 {
+  z-index: 2;
   position: absolute;
-  top: 32.8%;
-  left: 18.5%;
+  top: 68.5%;
+  left: 1.5%;
   color: #828282;
 }
 .eyeOffIcon1,
 .eyeOnIcon1 {
-  left: 44%;
+  left: 91%;
 }
 .eyeOffIcon2,
 .eyeOnIcon2 {
-  left: 44%;
+  left: 91%;
 }
 .updateBtn {
   background-color: #17a2b8;

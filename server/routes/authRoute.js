@@ -83,7 +83,9 @@ authRouter.patch("/update", authorization, async (req, res) => {
     if (oldPassword) {
       const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
       if (!isPasswordValid) {
-        return res.status(401).json({ error: "Old password is incorrect" });
+        return res
+          .status(401)
+          .json({ status: "failed", error: "Old password is incorrect" });
       }
       if (newPassword) {
         const newHashedPassword = await bcrypt.hashSync(newPassword, 10);
@@ -93,12 +95,11 @@ authRouter.patch("/update", authorization, async (req, res) => {
     if (name) {
       user.name = name;
     }
-    await user.save();
-    res.status(200).json({ status: "success" });
+    const data = await user.save();
+    res.status(200).json({ status: "success", updatedData: data });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 module.exports = authRouter;

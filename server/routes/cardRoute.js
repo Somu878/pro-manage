@@ -58,6 +58,38 @@ cardRouter.get("/by-date/:datePreference", authorization, async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+cardRouter.get("/analytics", authorization, async (req, res) => {
+  try {
+    const getAll = await Card.find({
+      refUserId: req.userId,
+    });
+
+    const cardsWithDueDate = await Card.countDocuments({
+      refUserId: req.userId,
+      dueDate: { $exists: true, $ne: null },
+    });
+    const statusAnalytics = getAll.reduce((result, card) => {
+      //TODO
+      const status = card.status || "Unknown";
+      result[status] = (result[status] || 0) + 1;
+      return result;
+    }, {});
+    const priorityAnalytics = getAll.reduce((result, card) => {
+      const priority = card.priority || "Unknown";
+      result[priority] = (result[priority] || 0) + 1;
+      return result;
+    }, {});
+
+    res.json({
+      priorityAnalytics,
+      cardsWithDueDate,
+      statusAnalytics,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 cardRouter.get("/:cardId", async (req, res) => {
   try {

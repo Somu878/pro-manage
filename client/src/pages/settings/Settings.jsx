@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import styles from "./settings.module.css";
 import { CiLock, CiUser } from "react-icons/ci";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import toast, { Toaster } from "react-hot-toast";
+import { updateUser } from "./../../apis/UpdateAuthAPi";
 function Settings() {
   const [showNewPassword, setShowNewPassword] = useState(false);
-  const [passwordMatchError, setPasswordMatchError] = useState(false);
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [updatedData, setUpdatedData] = useState({
     name: "",
@@ -28,18 +29,47 @@ function Settings() {
     const { name, value } = e.target;
     setUpdatedData((prevData) => ({ ...prevData, [name]: value }));
   };
+  const validateForm = () => {
+    const { name, oldPassword, newPassword } = updatedData;
+    if (!name && !oldPassword && !newPassword) {
+      toast.error("Atleast one field is required to update");
+      return false;
+    }
+    if (newPassword && !oldPassword) {
+      toast.error("Old Password is required");
+      return false;
+    }
+    return true;
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        const response = await updateUser(
+          updatedData.name,
+          updatedData.oldPassword,
+          updatedData.newPassword
+        );
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.error();
+    }
+  };
   return (
     <div className={styles.settingsContainer}>
-      <form>
+      <Toaster position="top-center" reverseOrder={false} />
+      <form onSubmit={handleSubmit}>
         <p>Settings</p>
         <div className={styles.inputGroup}>
           <span>
-            <CiUser size={"23px"} className={styles.Icon1} />
+            <CiUser size={"28px"} className={styles.Icon1} />
           </span>
           <input
             type="text"
             name="name"
-            required
             spellCheck="false"
             placeholder="Name"
             value={updatedData.name}
@@ -48,12 +78,11 @@ function Settings() {
         </div>
         <div className={styles.inputGroup}>
           <span>
-            <CiLock size={"25px"} className={styles.Icon2} />
+            <CiLock size={"30px"} className={styles.Icon2} />
           </span>
           <input
             type={showOldPassword ? "text" : "password"}
             name="oldPassword"
-            required
             spellCheck="false"
             placeholder="Old Password"
             value={updatedData.oldPassword}
@@ -79,12 +108,11 @@ function Settings() {
         </div>
         <div className={styles.inputGroup}>
           <span>
-            <CiLock size={"25px"} className={styles.Icon3} />
+            <CiLock size={"30px"} className={styles.Icon3} />
           </span>
           <input
             type={showNewPassword ? "text" : "password"}
             name="newPassword"
-            required
             spellCheck="false"
             placeholder="New Password"
             value={updatedData.newPassword}

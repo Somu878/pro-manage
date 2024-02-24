@@ -1,4 +1,6 @@
 .loginContainer {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   margin-top: 15vh;
@@ -18,19 +20,23 @@
 }
 .postIcon {
   position: absolute;
-  top: 31.8%;
-  left: 66.5%;
+  top: 28.5%;
+  left: -30%;
+
+  z-index: 2;
 }
 .lockIcon {
+  z-index: 2;
   position: absolute;
-  top: 42%;
-  left: 66.5%;
+  top: 46%;
+  left: -30%;
 }
 .eyeOnIcon,
 .eyeOffIcon {
+  z-index: 2;
   position: absolute;
-  top: 42.8%;
-  left: 91.7%;
+  top: 47%;
+  left: 120%;
 }
 .inputGroup input {
   width: 415px;
