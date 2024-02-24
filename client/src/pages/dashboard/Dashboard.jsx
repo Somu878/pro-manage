@@ -56,33 +56,6 @@ function Dashboard() {
         <CardBox statusName={"Progress"} />
         <CardBox statusName={"To-do"} />
         <CardBox statusName={"Done"} />
-        {/* <div className={styles.cardBox}>
-          <div className={styles.cardBoxGroup}>
-            <div>Backlogs</div>
-            <div>
-              <VscCollapseAll
-                size={"20px"}
-                color="#767575"
-                onClick={() => setIsDropDownOpen(false)}
-              />
-            </div>
-          </div>
-          <Card
-            priority="high"
-            title="test title"
-            tasks={[
-              { _id: 1, content: "njnss", isDone: true },
-              { _id: 2, content: "sdsad", isDone: false },
-            ]}
-            dueDate="29th Feb"
-            status="backlog"
-            isDropDownOpen={isDropDownOpen["backlogs"]}
-            onDropDownToggle={() => handleCardDropDown("backlogs")}
-          />
-        </div>
-        <div className={styles.cardBox}></div>
-        <div className={styles.cardBox}></div>
-        <div className={styles.cardBox}></div> */}
       </div>
     </div>
   );

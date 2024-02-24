@@ -5,7 +5,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import Banner from "../../components/banner/Banner";
 import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
-import { LoginUser } from "../../apis/Auth";
+import { LoginUser } from "../../apis/AuthApi";
 import toast, { Toaster } from "react-hot-toast";
 function Login() {
   const navigate = useNavigate();

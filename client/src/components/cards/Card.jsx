@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import styles from "./card.module.css";
-import { RiArrowDropDownLine } from "react-icons/ri";
+import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import { TbDots } from "react-icons/tb";
 import { GoDotFill } from "react-icons/go";
-function Card({ id, priority, title, tasks, dueDate, status }) {
+function Card({ id, priority, title, tasks, dueDate, status, collapse }) {
   const [showTasks, setShowTasks] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const priorities = {
     high: {
       color: "red",
@@ -39,33 +40,48 @@ function Card({ id, priority, title, tasks, dueDate, status }) {
     <div className={styles.card}>
       <div className={styles.cardGroup}>
         <div style={{ display: "flex", fontSize: "12.5px" }}>
-          <div>
+          <div style={{}}>
             <GoDotFill color={CardPriority.color} size={"18px"} />
           </div>
-
           {CardPriority.name}
         </div>
         <div>
-          <TbDots size={"23px"} />
+          <TbDots size={"23px"} onClick={() => setShowMenu(!showMenu)} />
+          {showMenu ? (
+            <div className={styles.menu}>
+              <div>Edit</div>
+              <div>Share</div>
+              <div style={{ color: "red" }}>Delete</div>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
+
       <div
         style={{ fontWeight: "500", fontSize: "20px", marginBottom: "15px" }}
       >
         {title}
       </div>
       <div className={styles.cardGroup}>
-        <div style={{ fontSize: "14px", fontWeight: "500" }}>
+        <div className={styles.checklist}>
           Checklist({tasks.filter((task) => task.isDone).length}/{tasks.length})
         </div>
-        <div className={styles.icon}>
-          <RiArrowDropDownLine //TODO
-            size={"25px"}
-            onClick={() => setShowTasks(!showTasks)}
-          />
+        <div
+          className={styles.icon}
+          onClick={() => {
+            setShowTasks(!showTasks);
+          }}
+        >
+          {showTasks ? (
+            <RiArrowDropUpLine size={"23px"} />
+          ) : (
+            <RiArrowDropDownLine size={"23px"} />
+          )}
         </div>
       </div>
-      {showTasks ? (
+      {showTasks && collapse ? (
         <div
           style={{
             display: "flex",

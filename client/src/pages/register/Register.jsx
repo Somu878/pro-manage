@@ -5,7 +5,7 @@ import { CiUser, CiLock } from "react-icons/ci";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import styles from "./register.module.css";
 import { useNavigate } from "react-router-dom";
-import { RegisterUser } from "../../apis/Auth";
+import { RegisterUser } from "../../apis/AuthApi";
 import toast, { Toaster } from "react-hot-toast";
 function Register() {
   const navigate = useNavigate();

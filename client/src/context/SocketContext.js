@@ -1,5 +1,3 @@
-// socketContext.js
-
 import React, { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 
@@ -12,7 +10,6 @@ export function SocketProvider({ children }) {
     const newSocket = io("http://localhost:9000");
     setSocket(newSocket);
 
-    // Clean up the socket connection when the component unmounts
     return () => {
       newSocket.disconnect();
     };

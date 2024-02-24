@@ -4,27 +4,29 @@ import { IoIosAdd } from "react-icons/io";
 import styles from "./cardbox.module.css";
 import Card from "./Card";
 function CardBox({ statusName }) {
+  const [collapse, setCollapse] = useState(true);
   return (
     <div className={styles.cardBox}>
       <div className={styles.cardBoxGroup}>
         <div style={{ fontWeight: "600" }}>{statusName}</div>
         <div>
           {statusName === "To-do" ? <IoIosAdd size={"23px"} /> : <></>}
-          <VscCollapseAll size={"20px"} color="#767575" />
+          <VscCollapseAll size={"20px"} color="#767575" onClick={() => {}} />
         </div>
       </div>
-      <div>
-        <Card
+      <div className={styles.cardList}>
+        {/* <Card
           id={"1"}
-          priority="moderate"
-          title="test title"
+          priority="low"
+          title="test title2"
           tasks={[
-            { _id: 1, content: "njnss", isDone: true },
-            { _id: 2, content: "sdsad", isDone: false },
+            { _id: 1, content: "njnssdcs", isDone: false },
+            { _id: 2, content: "sdsad asada", isDone: false },
           ]}
           dueDate="29th Feb"
           status={statusName}
-        />
+          collapse={collapse}
+        /> */}
       </div>
     </div>
   );

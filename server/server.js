@@ -25,8 +25,8 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
-app.use("/api/v1/user", authRouter);
-app.use("/api/v1/card", cardRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/board", cardRouter);
 const io = initializeSocket(server, origin);
 const port = process.env.PORT || 9000;
 server.listen(port, () => {

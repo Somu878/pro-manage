@@ -1,13 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 .card {
   background-color: white;
   margin: 15px;
   padding: 15px;
   border-radius: 15px;
   font-family: var(--poppins);
+  z-index: 1;
+  position: relative;
 }
 .cardGroup {
   display: flex;
   justify-content: space-between;
+}
+.checklist {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+}
+.menu {
+  position: absolute;
+  top: 20%;
+  left: 58%;
+  width: 90px;
+  background-color: white;
+  box-shadow: 0px 2px 22px rgba(126, 122, 122, 0.25);
+  font-size: small;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 7px;
 }
 .btnGroup {
   display: flex;
