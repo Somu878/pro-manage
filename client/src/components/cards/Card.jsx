@@ -17,15 +17,15 @@ function Card({
   const [showMenu, setShowMenu] = useState(false);
   const priorities = {
     high: {
-      color: "red",
+      color: "#FF2473",
       name: "High Priority",
     },
     moderate: {
-      color: "yellow",
+      color: "#18B0FF",
       name: "Moderate Priority",
     },
     low: {
-      color: "green",
+      color: "#63C05B",
       name: "Low Priority",
     },
   };
@@ -69,7 +69,7 @@ function Card({
       </div>
 
       <div
-        style={{ fontWeight: "500", fontSize: "20px", marginBottom: "15px" }}
+        style={{ fontWeight: "450", fontSize: "18px", marginBottom: "15px" }}
       >
         {title}
       </div>

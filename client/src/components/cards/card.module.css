@@ -5,7 +5,6 @@
   padding: 10px;
   border-radius: 15px;
   font-family: var(--poppins);
-  z-index: 1;
   position: relative;
 }
 .cardGroup {
