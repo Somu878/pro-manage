@@ -3,7 +3,6 @@ import styles from "./cardmodal.module.css";
 import { GoDotFill } from "react-icons/go";
 import { MdDelete } from "react-icons/md";
 import cardApi from "..//../apis/CardApi";
-
 function CardModal({ mode, cardId, handleModelClose }) {
   const priorities = {
     high: {
@@ -22,14 +21,13 @@ function CardModal({ mode, cardId, handleModelClose }) {
       value: "low",
     },
   };
-
   const prioritiesArray = Object.values(priorities);
-
   const [tasks, setTasks] = useState([]);
+  const [showCalender, setShowCalender] = useState(false);
   const [selectedPriority, setSelectedPriority] = useState(null);
   const [cardData, setCardData] = useState({
     title: "",
-    priority: "",
+    priority: null,
     tasks: [],
     dueDate: "",
   });
@@ -39,7 +37,6 @@ function CardModal({ mode, cardId, handleModelClose }) {
       { _id: Date.now(), content: "", isDone: false },
     ]);
   };
-
   const handleTaskChange = (taskId, field, value) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
@@ -55,39 +52,65 @@ function CardModal({ mode, cardId, handleModelClose }) {
     setSelectedPriority(priority === selectedPriority ? null : priority);
     setCardData((prevData) => ({ ...prevData, priority }));
   };
-  const handleTitleChange = (e) => {
-    setCardData((prevData) => ({ ...prevData, title: e.target.value }));
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCardData((prevData) => ({ ...prevData, [name]: value }));
   };
-  const handleDueDateChange = (e) => {
-    setCardData((prevData) => ({ ...prevData, dueDate: e.target.value }));
-  };
-  const handleSave = () => {
-    setCardData((prevData) => ({
-      ...prevData,
-      tasks: tasks.map((task) => ({
-        content: task.content,
-        isDone: task.isDone,
-      })),
+  const handleSave = async (e) => {
+    e.preventDefault();
+
+    // Remove _id field from tasks
+    const tasksWithoutId = tasks.map(({ _id, ...rest }) => ({
+      ...rest,
     }));
+
+    await setCardData((prevData) => ({
+      ...prevData,
+      tasks: tasksWithoutId,
+    }));
+
+    if (mode === "edit") {
+      await handleEditCard();
+    } else {
+      handleAdd();
+    }
+
     handleModelClose();
   };
-  if (mode === "edit") {
-    useEffect(() => {
-      const fetchInitialCardData = async (cardId) => {
-        try {
-          const response = await cardApi.get(cardId);
-          const cardData = response?.data;
-          setCardData(cardData);
-          setTasks(cardData.tasks || []);
-          setSelectedPriority(cardData.priority || null);
-        } catch (error) {
-          console.log(error);
-        }
-      };
 
+  const fetchInitialCardData = async () => {
+    try {
+      const response = await cardApi.getCard(cardId);
+      const fetchedData = response;
+      setCardData((prevData) => ({
+        ...prevData,
+        title: fetchedData.title,
+        tasks: fetchedData.tasks || [],
+        priority: fetchedData.priority || null,
+      }));
+      setSelectedPriority(fetchedData.priority);
+      setTasks(fetchedData.tasks);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (mode === "edit") {
       fetchInitialCardData();
-    }, []);
-  }
+    }
+  }, [mode, cardId]);
+  const handleEditCard = async () => {
+    try {
+      const response = await cardApi.updateCard(cardId, cardData);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleAdd = async () => {
+    const response = await cardApi.addCard(cardData);
+    console.log(response);
+  };
   return (
     <form onSubmit={handleSave} className={styles.cardModalContainer}>
       <div className={styles.form}>
@@ -97,10 +120,11 @@ function CardModal({ mode, cardId, handleModelClose }) {
           </div>
           <input
             type="text"
+            name="title"
             placeholder="Enter Task Title"
             className={styles.titleInput}
             value={cardData.title}
-            onChange={handleTitleChange}
+            onChange={handleInputChange}
             required
           />
         </div>
@@ -171,10 +195,25 @@ function CardModal({ mode, cardId, handleModelClose }) {
           </p>
         </div>
       </div>
+
       <div className={styles.btnGroup}>
-        <button className={styles.dueDateBtn} onClick={handleDueDateChange}>
-          Due Date
+        <button
+          className={styles.dueDateBtn}
+          onClick={() => setShowCalender(!showCalender)}
+        >
+          Select Due Date
         </button>
+        {showCalender ? (
+          <input
+            type="date"
+            name="dueDate"
+            value={cardData.dueDate}
+            onChange={handleInputChange}
+            className={styles.dueDateInput}
+          />
+        ) : (
+          <></>
+        )}
         <div style={{ display: "flex", gap: "20px" }}>
           <button
             className={styles.cancelBtn}

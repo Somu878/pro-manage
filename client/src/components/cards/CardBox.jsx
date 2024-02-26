@@ -5,9 +5,13 @@ import styles from "./cardbox.module.css";
 import Card from "./Card";
 import Modal from "react-modal";
 import CardModal from "../modals/CardModal";
-function CardBox({ statusName }) {
+import cardApi from "../../apis/CardApi";
+
+function CardBox({ status, filter }) {
   const [collapse, setCollapse] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [cardsData, setCardsData] = useState(null);
+
   const customStyles = {
     content: {
       top: "50%",
@@ -22,12 +26,28 @@ function CardBox({ statusName }) {
       transform: "translate(-50%, -50%)",
     },
   };
+
+  useEffect(() => {
+    const fetchCardsData = async () => {
+      try {
+        const response = await cardApi.getCards(
+          filter,
+          status.toLowerCase().replace(/\s/g, "")
+        );
+        setCardsData(response);
+      } catch (error) {
+        console.error("Error fetching cards data:", error);
+      }
+    };
+    fetchCardsData();
+  }, [filter, status]);
+
   return (
     <div className={styles.cardBox}>
       <div className={styles.cardBoxGroup}>
-        <div style={{ fontWeight: "600" }}>{statusName}</div>
+        <div style={{ fontWeight: "600" }}>{status}</div>
         <div>
-          {statusName === "To-do" ? (
+          {status === "To do" ? (
             <IoIosAdd size={"23px"} onClick={() => setModalOpen(true)} />
           ) : (
             <></>
@@ -35,9 +55,7 @@ function CardBox({ statusName }) {
           <VscCollapseAll
             size={"20px"}
             color="#767575"
-            onClick={() => {
-              setCollapse(false);
-            }}
+            onClick={() => setCollapse(false)}
           />
         </div>
       </div>
@@ -48,38 +66,24 @@ function CardBox({ statusName }) {
           onRequestClose={() => setModalOpen(false)}
           ariaHideApp={false}
         >
-          <CardModal
-            mode={"edit"}
-            handleModelClose={() => setModalOpen(false)}
-          />
+          <CardModal handleModelClose={() => setModalOpen(false)} />
         </Modal>
       </div>
       <div className={styles.cardList}>
-        <Card
-          id={"1"}
-          priority="low"
-          title="test title2"
-          tasks={[
-            { _id: 1, content: "njnssdcs", isDone: false },
-            { _id: 2, content: "sdsad asada", isDone: false },
-          ]}
-          dueDate="29th Feb"
-          status={statusName}
-          collapse={collapse}
-          handleCollapse={() => setCollapse(true)}
-        />
-        <Card
-          id={"1"}
-          priority="low"
-          title="test title2"
-          tasks={[
-            { _id: 1, content: "njnssdcs", isDone: false },
-            { _id: 2, content: "sdsad asada", isDone: false },
-          ]}
-          dueDate="29th Feb"
-          status={statusName}
-          collapse={collapse}
-        />
+        {cardsData &&
+          cardsData.map((card) => (
+            <Card
+              key={card._id}
+              id={card._id}
+              priority={card.priority}
+              title={card.title}
+              tasks={card.tasks}
+              dueDate={card.dueDate}
+              status={status}
+              collapse={collapse}
+              handleCollapse={() => setCollapse(true)}
+            />
+          ))}
       </div>
     </div>
   );

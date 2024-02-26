@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import styles from "./card.module.css";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import { TbDots } from "react-icons/tb";
+
 import { GoDotFill } from "react-icons/go";
+import Modal from "react-modal";
+import CardModal from "../modals/CardModal";
+import cardApi from "../../apis/CardApi";
 function Card({
   id,
   priority,
@@ -13,8 +17,26 @@ function Card({
   collapse,
   handleCollapse,
 }) {
+  const BaseURL = import.meta.env.VITE_APP_URL;
   const [showTasks, setShowTasks] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      width: "550px",
+      height: "450px",
+      padding: "30px",
+      borderRadius: "20px",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
   const priorities = {
     high: {
       color: "#FF2473",
@@ -33,7 +55,7 @@ function Card({
   const statusButtons = {
     Backlog: ["PROGRESS", "TO-DO", "DONE"],
     Progress: ["BACKLOG", "TO-DO", "DONE"],
-    "To-do": ["BACKLOG", "PROGRESS", "DONE"],
+    "To do": ["BACKLOG", "PROGRESS", "DONE"],
     Done: ["BACKLOG", "PROGRESS", "TO-DO"],
   };
   const StatusButtons = () => {
@@ -45,6 +67,19 @@ function Card({
     );
   };
   const CardPriority = priorities[priority.toLowerCase()];
+  const handleDeleteCard = async (cardId) => {
+    const response = await cardApi.deletecard(cardId);
+    if (response.status === 200) {
+      alert("Deleted Successfully");
+    }
+  };
+  const handleCopyToClipboard = () => {
+    const textToCopy = `${BaseURL}viewCard/${id}`;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
   return (
     <div className={styles.card}>
       <div className={styles.cardGroup}>
@@ -58,9 +93,26 @@ function Card({
           <TbDots size={"23px"} onClick={() => setShowMenu(!showMenu)} />
           {showMenu ? (
             <div className={styles.menu}>
-              <div>Edit</div>
-              <div>Share</div>
-              <div style={{ color: "red" }}>Delete</div>
+              <div onClick={() => setShowEditModal(true)}>Edit</div>
+              <Modal
+                isOpen={showEditModal}
+                style={customStyles}
+                onRequestClose={() => setShowEditModal(false)}
+                ariaHideApp={false}
+              >
+                <CardModal
+                  mode={"edit"}
+                  cardId={id}
+                  handleModelClose={() => setShowEditModal(false)}
+                />
+              </Modal>
+              <div onClick={handleCopyToClipboard}>Share</div>
+              <div
+                style={{ color: "red" }}
+                onClick={() => handleDeleteCard(id)}
+              >
+                Delete
+              </div>
             </div>
           ) : (
             <></>

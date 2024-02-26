@@ -9,7 +9,7 @@ const cardValidation = Joi.object({
       isDone: Joi.boolean().default(false),
     })
   ),
-  dueDate: Joi.date().min("now").allow(null),
+  dueDate: Joi.allow(null),
   status: Joi.string()
     .valid("backlog", "todo", "progress", "done")
     .default("todo"),

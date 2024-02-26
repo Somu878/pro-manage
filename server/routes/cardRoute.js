@@ -26,38 +26,88 @@ const {
 //     res.status(400).send("Internal server error");
 //   }
 // });
-cardRouter.get("/by-date/:datePreference", authorization, async (req, res) => {
-  try {
-    const { datePreference } = req.params;
-    const currentDate = new Date();
-    let startDate, endDate;
-    switch (datePreference) {
-      case "today":
-        startDate = startOfDay(currentDate);
-        endDate = endOfDay(currentDate);
-        break;
-      case "this-week":
-        startDate = startOfWeek(currentDate, { weekStartsOn: 1 });
-        endDate = endOfWeek(currentDate, { weekStartsOn: 1 });
-        break;
-      case "this-month":
-        startDate = startOfMonth(currentDate);
-        endDate = endOfMonth(currentDate);
-        break;
-      default:
-        return res.status(400).json({ error: "Invalid date preference" });
-    }
-    const cardsByDatePreference = await Card.find({
-      createdAt: { $gte: startDate, $lt: endDate },
-      refUserId: req.userId,
-    });
+cardRouter.get(
+  "/all/:datePreference/:status",
+  authorization,
+  async (req, res) => {
+    try {
+      let { datePreference, status } = req.params;
+      const currentDate = new Date();
+      let startDate, endDate;
 
-    res.status(200).json({ data: cardsByDatePreference });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
+      if (!datePreference || datePreference.trim() === "") {
+        startDate = new Date(0);
+        endDate = new Date();
+      } else {
+        switch (datePreference) {
+          case "today":
+            startDate = startOfDay(currentDate);
+            endDate = endOfDay(currentDate);
+            break;
+          case "week":
+            startDate = startOfWeek(currentDate, { weekStartsOn: 1 });
+            endDate = endOfWeek(currentDate, { weekStartsOn: 1 });
+            break;
+          case "month":
+            startDate = startOfMonth(currentDate);
+            endDate = endOfMonth(currentDate);
+            break;
+          default:
+            return res.status(400).json({ error: "Invalid date" });
+        }
+      }
+
+      const query = {
+        createdAt: { $gte: startDate, $lt: endDate },
+        refUserId: req.userId,
+        ...(status && { status: status.toLowerCase() }),
+      };
+
+      const cardsByDateAndStatus = await Card.find(query);
+      res.status(200).json({ data: cardsByDateAndStatus });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
   }
-});
+);
+
+cardRouter.get(
+  "/all/:datePreference/:status",
+  authorization,
+  async (req, res) => {
+    try {
+      const { datePreference } = req.params;
+      const currentDate = new Date();
+      let startDate, endDate;
+      switch (datePreference) {
+        case "today":
+          startDate = startOfDay(currentDate);
+          endDate = endOfDay(currentDate);
+          break;
+        case "week":
+          startDate = startOfWeek(currentDate, { weekStartsOn: 1 });
+          endDate = endOfWeek(currentDate, { weekStartsOn: 1 });
+          break;
+        case "month":
+          startDate = startOfMonth(currentDate);
+          endDate = endOfMonth(currentDate);
+          break;
+        default:
+          return res.status(400).json({ error: "Invalid date preference" });
+      }
+      const cardsByDatePreference = await Card.find({
+        createdAt: { $gte: startDate, $lt: endDate },
+        refUserId: req.userId,
+      });
+
+      res.status(200).json({ data: cardsByDatePreference });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
 cardRouter.get("/analytics", authorization, async (req, res) => {
   try {
     const getAll = await Card.find({

@@ -7,15 +7,18 @@ import CardBox from "../../components/cards/CardBox";
 function Dashboard() {
   const currentDate = format(new Date(), "do MMM, yyyy");
   const [dropDown, setDropDown] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Today");
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const [selectedFilter, setSelectedOption] = useState("today");
   const handleDropDown = () => {
     setDropDown(!dropDown);
   };
-
+  const renderCardBoxes = () => {
+    return ["Backlog", "To do", "Progress", "Done"].map((statusName) => (
+      <CardBox key={statusName} status={statusName} filter={"month"} />
+    ));
+  };
   const handleOptionChange = (option) => {
     setSelectedOption(option);
-    setDropDown(false); // Close the dropdown after selecting an option
+    setDropDown(false);
   };
   return (
     <div className={styles.dashboardContainer}>
@@ -31,7 +34,7 @@ function Dashboard() {
           Board
         </p>
         <div className={styles.dropDown} onClick={handleDropDown}>
-          {selectedOption}
+          {selectedFilter}
           <img src={Arrow} alt="dropdown" />
           {/* <select>
             <option value="today">Today</option>
@@ -41,22 +44,15 @@ function Dashboard() {
         </div>
         {dropDown ? (
           <div className={styles.dropDownList}>
-            <div onClick={() => handleOptionChange("Today")}>Today</div>
-            <div onClick={() => handleOptionChange("This Week")}>This Week</div>
-            <div onClick={() => handleOptionChange("This Month")}>
-              This Month
-            </div>
+            <div onClick={() => handleOptionChange("today")}>today</div>
+            <div onClick={() => handleOptionChange("week")}>This Week</div>
+            <div onClick={() => handleOptionChange("month")}>This Month</div>
           </div>
         ) : (
           <></>
         )}
       </div>
-      <div className={styles.cardsContainer}>
-        <CardBox statusName={"Backlog"} />
-        <CardBox statusName={"Progress"} />
-        <CardBox statusName={"To-do"} />
-        <CardBox statusName={"Done"} />
-      </div>
+      <div className={styles.cardsContainer}>{renderCardBoxes()}</div>
     </div>
   );
 }

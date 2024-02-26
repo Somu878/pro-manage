@@ -27,6 +27,7 @@
   font-weight: 500;
   border-radius: 7px;
   padding: 7px;
+  cursor: pointer;
 }
 .btnGroup {
   display: flex;
