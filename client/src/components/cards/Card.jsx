@@ -66,7 +66,7 @@ function Card({
       ))
     );
   };
-  const CardPriority = priorities[priority.toLowerCase()];
+  const CardPriority = priorities[priority];
   const handleDeleteCard = async (cardId) => {
     const response = await cardApi.deletecard(cardId);
     if (response.status === 200) {
@@ -74,7 +74,7 @@ function Card({
     }
   };
   const handleCopyToClipboard = () => {
-    const textToCopy = `${BaseURL}viewCard/${id}`;
+    const textToCopy = `${BaseURL}/view/${id}`;
     navigator.clipboard.writeText(textToCopy).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);

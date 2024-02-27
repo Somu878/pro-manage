@@ -1,9 +1,6 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import "./App.css";
-// import io from "socket.io-client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import Authlayout from "./components/layouts/AuthLayout";
-// import AppLayout from "./components/layouts/AppLayout";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -12,14 +9,8 @@ import Settings from "./pages/settings/Settings";
 import Analytics from "./pages/analytics/Analytics";
 const AppLayout = lazy(() => import("./components/layouts/AppLayout"));
 const AuthLayout = lazy(() => import("./components/layouts/AuthLayout"));
-
+const ViewCard = lazy(() => import("./pages/viewCard/ViewCard"));
 function App() {
-  // const socket = io("http://localhost:9000");
-  // useEffect(() => {
-  //   socket.on("yourCustomEvent", (data) => {
-  //     console.log("Received data from server:", data);
-  //   });
-  // }, []);
   return (
     <BrowserRouter>
       <Routes>
@@ -46,6 +37,14 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
         </Route>
+        <Route
+          path={"/view/:cardId"}
+          element={
+            <Suspense fallback={<CornerStoneLoader />}>
+              <ViewCard />
+            </Suspense>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

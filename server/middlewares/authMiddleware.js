@@ -15,6 +15,7 @@ module.exports = async (req, res, next) => {
       return res.status(404).send("User not found");
     }
     req.userId = decoded.userId;
+    req.userName = user.name;
     next();
   } catch (error) {
     console.error(error);

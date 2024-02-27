@@ -102,4 +102,12 @@ authRouter.patch("/update", authorization, async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+authRouter.get("/data", authorization, (req, res) => {
+  const username = req.userName;
+  if (username) {
+    res.status(200).json({ data: username });
+  } else {
+    res.status(401).json({ message: "Username not found" });
+  }
+});
 module.exports = authRouter;
