@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import styles from "./card.module.css";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import { TbDots } from "react-icons/tb";
-
+import toast, { Toaster } from "react-hot-toast";
 import { GoDotFill } from "react-icons/go";
 import Modal from "react-modal";
+import { format } from "date-fns";
 import CardModal from "../modals/CardModal";
 import cardApi from "../../apis/CardApi";
 function Card({
@@ -69,14 +70,15 @@ function Card({
   const CardPriority = priorities[priority];
   const handleDeleteCard = async (cardId) => {
     const response = await cardApi.deletecard(cardId);
-    if (response.status === 200) {
-      alert("Deleted Successfully");
+    if (response.status === "success") {
+      toast.success("Card deleted Successfully");
     }
   };
   const handleCopyToClipboard = () => {
     const textToCopy = `${BaseURL}/view/${id}`;
     navigator.clipboard.writeText(textToCopy).then(() => {
-      setCopied(true);
+      setShowMenu(false);
+      toast.success("Link copied to Clipboard");
       setTimeout(() => setCopied(false), 2000);
     });
   };
@@ -109,7 +111,10 @@ function Card({
               <div onClick={handleCopyToClipboard}>Share</div>
               <div
                 style={{ color: "red" }}
-                onClick={() => handleDeleteCard(id)}
+                onClick={() => {
+                  handleDeleteCard(id);
+                  setShowMenu(false);
+                }}
               >
                 Delete
               </div>
@@ -169,7 +174,13 @@ function Card({
       )}
 
       <div className={styles.cardGroup} style={{ marginTop: "10px" }}>
-        <div style={{ fontSize: "13px", fontWeight: "600" }}>{dueDate}</div>
+        {dueDate ? (
+          <div style={{ fontSize: "13px", fontWeight: "600" }}>
+            {format(new Date(dueDate), "do MMM")}
+          </div>
+        ) : (
+          <span> </span>
+        )}
         <div className={styles.btnGroup}>{StatusButtons()}</div>
       </div>
     </div>

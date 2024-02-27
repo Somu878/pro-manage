@@ -2,30 +2,31 @@ import React, { useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
 import { format } from "date-fns";
 import Arrow from "..//../assets/Vector 14.svg";
-import toast, { Toaster } from "react-hot-toast";
+// import toast, { Toaster } from "react-hot-toast";
 import CardBox from "../../components/cards/CardBox";
 import userApi from "../../apis/UserApi";
 function Dashboard() {
   const currentDate = format(new Date(), "do MMM, yyyy");
   const [dropDown, setDropDown] = useState(false);
   const [userName, setUserName] = useState("");
-  const [selectedFilter, setSelectedOption] = useState("today");
+  const [selectedFilter, setSelectedOption] = useState("Today");
   const handleDropDown = () => {
     setDropDown(!dropDown);
   };
   const renderCardBoxes = () => {
     return ["Backlog", "To do", "Progress", "Done"].map((statusName) => (
-      <CardBox key={statusName} status={statusName} filter={"month"} />
+      <CardBox key={statusName} status={statusName} filter={selectedFilter} />
     ));
   };
   const handleOptionChange = (option) => {
     setSelectedOption(option);
     setDropDown(false);
+    return option;
   };
   const getUserData = async () => {
     try {
-      const response = await userApi.getUserData();
-      setUserName(response);
+      const response = await userApi.verifyToken();
+      setUserName(response.name);
     } catch (error) {
       console.error("Error fetching user data:", error.message);
     }
@@ -37,6 +38,7 @@ function Dashboard() {
 
   return (
     <div className={styles.dashboardContainer}>
+      {/* <Toaster position={"top-center"} reverseOrder="false" /> */}
       <p style={{ fontSize: "18px", fontWeight: "500" }}>
         Welcome {userName}!{}
       </p>
@@ -56,9 +58,11 @@ function Dashboard() {
         </div>
         {dropDown ? (
           <div className={styles.dropDownList}>
-            <div onClick={() => handleOptionChange("today")}>today</div>
-            <div onClick={() => handleOptionChange("week")}>This Week</div>
-            <div onClick={() => handleOptionChange("month")}>This Month</div>
+            <div onClick={() => handleOptionChange("Today")}>Today</div>
+            <div onClick={() => handleOptionChange("This Week")}>This Week</div>
+            <div onClick={() => handleOptionChange("This Month")}>
+              This Month
+            </div>
           </div>
         ) : (
           <></>

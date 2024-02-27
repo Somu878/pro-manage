@@ -6,8 +6,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { FiSettings } from "react-icons/fi";
 import { GoDatabase } from "react-icons/go";
+import Modal from "react-modal";
 function Navabar() {
   const [activeLink, setActiveLink] = useState("board");
+  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     if (location.pathname === "/") {
@@ -18,9 +20,41 @@ function Navabar() {
       setActiveLink("settings");
     }
   }, [location.pathname]);
-
+  const customStyles = {
+    content: {
+      width: "330px",
+      height: "180px",
+      top: "40%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      borderRadius: "7px",
+      transform: "translate(-50%, -50%)",
+      display: "flex",
+      flexDirection: "column",
+    },
+  };
   return (
     <div className={styles.navbar}>
+      <Modal isOpen={modalOpen} style={customStyles}>
+        <h3>Are you sure you want to Logout?</h3>
+        <button
+          className={styles.continueBtn}
+          onClick={() => {
+            navigate("/login");
+            localStorage.clear();
+            setModalOpen(false);
+          }}
+        >
+          Yes,Logout
+        </button>
+        <button
+          className={styles.cancelBtn}
+          onClick={() => setModalOpen(false)}
+        >
+          Cancel
+        </button>
+      </Modal>
       <div className={styles.navLinks}>
         <div className={styles.navGroup} style={{ marginTop: "20px" }}>
           <img src={logo} alt="logo" />
@@ -62,10 +96,7 @@ function Navabar() {
       <div
         className={styles.navGroup}
         style={{ marginBottom: "30%", cursor: "pointer" }}
-        onClick={() => {
-          localStorage.clear();
-          navigate("/login");
-        }}
+        onClick={() => setModalOpen(true)}
       >
         <IoExitOutline size={"25px"} color="#CF3636" />
         <p style={{ color: "#CF3636" }}>Logout</p>

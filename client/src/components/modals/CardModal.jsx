@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import styles from "./cardmodal.module.css";
 import { GoDotFill } from "react-icons/go";
 import { MdDelete } from "react-icons/md";
+import toast from "react-hot-toast";
 import cardApi from "..//../apis/CardApi";
-function CardModal({ mode, cardId, handleModelClose }) {
+function CardModal({ mode, cardId, handleModelClose, trigger }) {
   const priorities = {
     high: {
       color: "#FF2473",
@@ -58,12 +59,9 @@ function CardModal({ mode, cardId, handleModelClose }) {
   };
   const handleSave = async (e) => {
     e.preventDefault();
-
-    // Remove _id field from tasks
     const tasksWithoutId = tasks.map(({ _id, ...rest }) => ({
       ...rest,
     }));
-
     await setCardData((prevData) => ({
       ...prevData,
       tasks: tasksWithoutId,
@@ -74,10 +72,8 @@ function CardModal({ mode, cardId, handleModelClose }) {
     } else {
       handleAdd();
     }
-
     handleModelClose();
   };
-
   const fetchInitialCardData = async () => {
     try {
       const response = await cardApi.getCard(cardId);
@@ -102,6 +98,7 @@ function CardModal({ mode, cardId, handleModelClose }) {
   const handleEditCard = async () => {
     try {
       const response = await cardApi.updateCard(cardId, cardData);
+      trigger;
       return response;
     } catch (error) {
       console.log(error);
@@ -109,7 +106,7 @@ function CardModal({ mode, cardId, handleModelClose }) {
   };
   const handleAdd = async () => {
     const response = await cardApi.addCard(cardData);
-    console.log(response);
+    toast.success("New card added successfully");
   };
   return (
     <form onSubmit={handleSave} className={styles.cardModalContainer}>

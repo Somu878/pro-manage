@@ -37,3 +37,25 @@
   color: black;
   outline: none;
 }
+.continueBtn,
+.cancelBtn {
+  width: 300px;
+  height: 50px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+.continueBtn {
+  width: 300px;
+  height: 50px;
+  border: 1.5px solid #cf3636;
+  background-color: transparent;
+  color: #cf3636;
+  margin: 15px;
+}
+
+.cancelBtn {
+  background-color: #17a2b8;
+  border: none;
+  color: white;
+  margin-left: 15px;
+}

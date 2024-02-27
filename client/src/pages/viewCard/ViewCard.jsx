@@ -24,7 +24,7 @@ function ViewCard() {
   const CardPriority = priorities[cardData?.priority];
   const fetchCardData = async () => {
     const response = await cardApi.getCard(cardId);
-    setCardData(response);
+    setCardData(response.data);
   };
   useEffect(() => {
     fetchCardData();

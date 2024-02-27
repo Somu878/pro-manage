@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Children } from "react";
 import { VscCollapseAll } from "react-icons/vsc";
 import { IoIosAdd } from "react-icons/io";
 import styles from "./cardbox.module.css";
 import Card from "./Card";
 import Modal from "react-modal";
 import CardModal from "../modals/CardModal";
+import toast, { Toaster } from "react-hot-toast";
 import cardApi from "../../apis/CardApi";
 
 function CardBox({ status, filter }) {
   const [collapse, setCollapse] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [cardsData, setCardsData] = useState(null);
-
   const customStyles = {
     content: {
       top: "50%",
@@ -26,24 +26,24 @@ function CardBox({ status, filter }) {
       transform: "translate(-50%, -50%)",
     },
   };
-
+  const fetchCardsData = async () => {
+    try {
+      const response = await cardApi.getCards(
+        filter.toLowerCase().replace(/\s/g, ""),
+        status.toLowerCase().replace(/\s/g, "")
+      );
+      setCardsData(response.data);
+    } catch (error) {
+      console.error("Error fetching cards data:", error);
+    }
+  };
   useEffect(() => {
-    const fetchCardsData = async () => {
-      try {
-        const response = await cardApi.getCards(
-          filter,
-          status.toLowerCase().replace(/\s/g, "")
-        );
-        setCardsData(response);
-      } catch (error) {
-        console.error("Error fetching cards data:", error);
-      }
-    };
     fetchCardsData();
-  }, [filter, status]);
+  }, [filter, status, modalOpen]);
 
   return (
     <div className={styles.cardBox}>
+      <Toaster position="top-center" reverseOrder={false} />
       <div className={styles.cardBoxGroup}>
         <div style={{ fontWeight: "600" }}>{status}</div>
         <div>
@@ -66,7 +66,10 @@ function CardBox({ status, filter }) {
           onRequestClose={() => setModalOpen(false)}
           ariaHideApp={false}
         >
-          <CardModal handleModelClose={() => setModalOpen(false)} />
+          <CardModal
+            trigger={() => fetchCardsData()}
+            handleModelClose={() => setModalOpen(false)}
+          />
         </Modal>
       </div>
       <div className={styles.cardList}>

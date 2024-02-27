@@ -11,21 +11,6 @@ const {
   startOfMonth,
   endOfMonth,
 } = require("date-fns");
-// cardRouter.get("/by-status/:status", authorization, async (req, res) => {
-//   try {
-//     const { status } = req.params;
-//     const statusValues = ["backlog", "todo", "progress", "done"];
-//     if (!statusValues.includes(status)) {
-//       return res
-//         .status(400)
-//         .json({ status: "invalid", message: "Invalid Status value" });
-//     }
-//     const cardDataByStatus = await Card.find({ status, refUserId: req.userId });
-//     res.status(201).send({ data: cardDataByStatus });
-//   } catch (error) {
-//     res.status(400).send("Internal server error");
-//   }
-// });
 cardRouter.get(
   "/all/:datePreference/:status",
   authorization,
@@ -44,11 +29,11 @@ cardRouter.get(
             startDate = startOfDay(currentDate);
             endDate = endOfDay(currentDate);
             break;
-          case "week":
+          case "thisweek":
             startDate = startOfWeek(currentDate, { weekStartsOn: 1 });
             endDate = endOfWeek(currentDate, { weekStartsOn: 1 });
             break;
-          case "month":
+          case "thismonth":
             startDate = startOfMonth(currentDate);
             endDate = endOfMonth(currentDate);
             break;
@@ -72,42 +57,6 @@ cardRouter.get(
   }
 );
 
-cardRouter.get(
-  "/all/:datePreference/:status",
-  authorization,
-  async (req, res) => {
-    try {
-      const { datePreference } = req.params;
-      const currentDate = new Date();
-      let startDate, endDate;
-      switch (datePreference) {
-        case "today":
-          startDate = startOfDay(currentDate);
-          endDate = endOfDay(currentDate);
-          break;
-        case "week":
-          startDate = startOfWeek(currentDate, { weekStartsOn: 1 });
-          endDate = endOfWeek(currentDate, { weekStartsOn: 1 });
-          break;
-        case "month":
-          startDate = startOfMonth(currentDate);
-          endDate = endOfMonth(currentDate);
-          break;
-        default:
-          return res.status(400).json({ error: "Invalid date preference" });
-      }
-      const cardsByDatePreference = await Card.find({
-        createdAt: { $gte: startDate, $lt: endDate },
-        refUserId: req.userId,
-      });
-
-      res.status(200).json({ data: cardsByDatePreference });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Internal Server Error");
-    }
-  }
-);
 cardRouter.get("/analytics", authorization, async (req, res) => {
   try {
     const getAll = await Card.find({
@@ -216,6 +165,43 @@ cardRouter.patch("/update/:cardId", authorization, async (req, res) => {
     }
   }
 });
+cardRouter.patch("/update/status/:cardId", authorization, async (req, res) => {
+  try {
+    const { cardId } = req.params;
+    const { status } = req.body;
+
+    if (!cardId) {
+      return res.status(400).json({
+        status: "failed",
+        error: "Card ID is required for updating",
+      });
+    }
+    const existingCard = await Card.findOne({
+      _id: cardId,
+      refUserId: req.userId,
+    });
+    if (!existingCard) {
+      return res.status(404).json({ error: "Card not found" });
+    }
+    if (status) {
+      existingCard.status = status;
+      await existingCard.save();
+      return res.status(200).json({
+        status: "success",
+        message: "Card status updated successfully",
+      });
+    } else {
+      return res.status(400).json({
+        status: "failed",
+        error: "Status is required for updating",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Internal server error");
+  }
+});
+
 cardRouter.delete("/delete/:cardId", authorization, async (req, res) => {
   try {
     const { cardId } = req.params;
