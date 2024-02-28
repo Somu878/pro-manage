@@ -82,9 +82,10 @@ function CardBox({ status, filter }) {
               title={card.title}
               tasks={card.tasks}
               dueDate={card.dueDate}
-              status={status}
+              status={card.status}
               collapse={collapse}
               handleCollapse={() => setCollapse(true)}
+              triggerReFetch={fetchCardsData}
             />
           ))}
       </div>

@@ -17,6 +17,7 @@ function Card({
   status,
   collapse,
   handleCollapse,
+  triggerReFetch,
 }) {
   const BaseURL = import.meta.env.VITE_APP_URL;
   const [showTasks, setShowTasks] = useState(false);
@@ -54,24 +55,50 @@ function Card({
   };
 
   const statusButtons = {
-    Backlog: ["PROGRESS", "TO-DO", "DONE"],
-    Progress: ["BACKLOG", "TO-DO", "DONE"],
-    "To do": ["BACKLOG", "PROGRESS", "DONE"],
-    Done: ["BACKLOG", "PROGRESS", "TO-DO"],
+    backlog: ["PROGRESS", "TO DO", "DONE"],
+    progress: ["BACKLOG", "TO DO", "DONE"],
+    todo: ["BACKLOG", "PROGRESS", "DONE"],
+    done: ["BACKLOG", "PROGRESS", "TO DO"],
+  };
+  const updateStatus = async (status) => {
+    try {
+      await cardApi.updateStatus(id, { status });
+      setTimeout(() => {
+        triggerReFetch();
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const StatusButtons = () => {
     return (
       statusButtons[status] &&
-      statusButtons[status].map((buttonLabel) => (
-        <div key={buttonLabel}>{buttonLabel}</div>
+      statusButtons[status].map((label) => (
+        <div
+          key={label}
+          onClick={() => updateStatus(label.toLowerCase().replace(/\s/g, ""))}
+        >
+          {label}
+        </div>
       ))
     );
+  };
+  const isDueDatePassed = (dueDate) => {
+    const currentDate = new Date();
+    const dueDateObject = new Date(dueDate);
+    return currentDate > dueDateObject;
+  };
+  const dueDateStyle = {
+    fontSize: "13px",
+    fontWeight: "600",
+    color: isDueDatePassed(dueDate) ? "red" : "inherit",
   };
   const CardPriority = priorities[priority];
   const handleDeleteCard = async (cardId) => {
     const response = await cardApi.deletecard(cardId);
     if (response.status === "success") {
       toast.success("Card deleted Successfully");
+      triggerReFetch();
     }
   };
   const handleCopyToClipboard = () => {
@@ -175,9 +202,7 @@ function Card({
 
       <div className={styles.cardGroup} style={{ marginTop: "10px" }}>
         {dueDate ? (
-          <div style={{ fontSize: "13px", fontWeight: "600" }}>
-            {format(new Date(dueDate), "do MMM")}
-          </div>
+          <div style={dueDateStyle}>{format(new Date(dueDate), "do MMM")}</div>
         ) : (
           <span> </span>
         )}

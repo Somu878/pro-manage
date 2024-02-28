@@ -1,6 +1,5 @@
 import axiosClient from "./AxiosClient";
 const userApi = {
-  getUserData: () => axiosClient.get("auth/data"),
   verifyToken: () => axiosClient.get("auth/data"),
 };
 

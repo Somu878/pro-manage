@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import logo from "..//../assets/codesandbox.svg";
 import { GoDotFill } from "react-icons/go";
 import cardApi from "..//../apis/CardApi";
+import { format } from "date-fns";
 function ViewCard() {
   const [cardData, setCardData] = useState(null);
   const { cardId } = useParams();
@@ -63,7 +64,9 @@ function ViewCard() {
         {cardData?.dueDate ? (
           <div style={{ display: "flex", gap: "15px", marginTop: "15px" }}>
             <div>Due Date</div>
-            <div className={styles.dueDate}>{cardData?.dueDate}</div>
+            <button className={styles.dueDate}>
+              {format(new Date(cardData?.dueDate), "do MMM")}
+            </button>
           </div>
         ) : (
           <></>

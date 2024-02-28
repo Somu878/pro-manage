@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import Navabar from "../navbar/Navabar";
 import { Outlet, useNavigate } from "react-router-dom";
 import userApi from "../../apis/UserApi";
 import CornerStoneLoader from "..//../components/loaders/CornerStoneLoader";
+
+const UserContext = createContext();
+
 function AppLayout() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+
   const checkAuth = async () => {
     try {
       const response = await userApi.verifyToken();
@@ -19,9 +23,11 @@ function AppLayout() {
       console.log(error);
     }
   };
+
   useEffect(() => {
     checkAuth();
   }, [navigate]);
+
   return (
     <div>
       {loading ? (
@@ -29,9 +35,9 @@ function AppLayout() {
       ) : (
         <div style={{ display: "flex" }}>
           <Navabar />
-          <div>
+          <UserContext.Provider value="test">
             <Outlet />
-          </div>
+          </UserContext.Provider>
         </div>
       )}
     </div>

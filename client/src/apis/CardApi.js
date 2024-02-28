@@ -8,6 +8,8 @@ const cardApi = {
     axiosClient.patch(`board/update/${cardId}`, params),
   addCard: (params) => axiosClient.post("board/add", params),
   deletecard: (cardId) => axiosClient.delete(`board/delete/${cardId}`),
+  updateStatus: (cardId, params) =>
+    axiosClient.patch(`board/update/status/${cardId}`, params),
 };
 
 export default cardApi;

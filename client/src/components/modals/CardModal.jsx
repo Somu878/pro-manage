@@ -77,7 +77,7 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
   const fetchInitialCardData = async () => {
     try {
       const response = await cardApi.getCard(cardId);
-      const fetchedData = response;
+      const fetchedData = response.data;
       setCardData((prevData) => ({
         ...prevData,
         title: fetchedData.title,
