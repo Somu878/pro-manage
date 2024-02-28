@@ -4,8 +4,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 import userApi from "../../apis/UserApi";
 import CornerStoneLoader from "..//../components/loaders/CornerStoneLoader";
 
-const UserContext = createContext();
-
 function AppLayout() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -35,9 +33,7 @@ function AppLayout() {
       ) : (
         <div style={{ display: "flex" }}>
           <Navabar />
-          <UserContext.Provider value="test">
-            <Outlet />
-          </UserContext.Provider>
+          <Outlet />
         </div>
       )}
     </div>

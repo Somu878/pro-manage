@@ -12,6 +12,7 @@ function CardBox({ status, filter }) {
   const [collapse, setCollapse] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [cardsData, setCardsData] = useState(null);
+  const [trigger, setTrigger] = useState(false);
   const customStyles = {
     content: {
       top: "50%",
@@ -39,7 +40,7 @@ function CardBox({ status, filter }) {
   };
   useEffect(() => {
     fetchCardsData();
-  }, [filter, status, modalOpen]);
+  }, [filter, status, trigger, modalOpen]);
 
   return (
     <div className={styles.cardBox}>
@@ -85,7 +86,7 @@ function CardBox({ status, filter }) {
               status={card.status}
               collapse={collapse}
               handleCollapse={() => setCollapse(true)}
-              triggerReFetch={fetchCardsData}
+              triggerReFetch={() => setTrigger(!trigger)}
             />
           ))}
       </div>

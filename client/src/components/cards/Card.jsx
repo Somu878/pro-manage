@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./card.module.css";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import { TbDots } from "react-icons/tb";
@@ -23,7 +23,6 @@ function Card({
   const [showTasks, setShowTasks] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [copied, setCopied] = useState(false);
   const customStyles = {
     content: {
       top: "50%",
@@ -63,9 +62,7 @@ function Card({
   const updateStatus = async (status) => {
     try {
       await cardApi.updateStatus(id, { status });
-      setTimeout(() => {
-        triggerReFetch();
-      }, 1000);
+      triggerReFetch();
     } catch (error) {
       console.log(error);
     }
@@ -119,7 +116,15 @@ function Card({
           {CardPriority.name}
         </div>
         <div>
-          <TbDots size={"23px"} onClick={() => setShowMenu(!showMenu)} />
+          <TbDots
+            size={"23px"}
+            onClick={() => {
+              setShowMenu(!showMenu);
+              setTimeout(() => {
+                setShowMenu(false);
+              }, 3000);
+            }}
+          />
           {showMenu ? (
             <div className={styles.menu}>
               <div onClick={() => setShowEditModal(true)}>Edit</div>
