@@ -27,6 +27,7 @@ function CardBox({ status, filter }) {
       transform: "translate(-50%, -50%)",
     },
   };
+
   const fetchCardsData = async () => {
     try {
       const response = await cardApi.getCards(

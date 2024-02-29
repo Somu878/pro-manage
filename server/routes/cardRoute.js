@@ -68,11 +68,16 @@ cardRouter.get("/analytics", authorization, async (req, res) => {
       dueDate: { $exists: true, $ne: null },
     });
     const statusAnalytics = getAll.reduce((result, card) => {
-      //TODO
       const status = card.status || "Unknown";
       result[status] = (result[status] || 0) + 1;
       return result;
     }, {});
+    const completedTasks = getAll.reduce((result, card) => {
+      const tasks = card.tasks || [];
+      const completedTasks = tasks.filter((task) => task.isDone);
+      result += completedTasks.length;
+      return result;
+    }, 0);
     const priorityAnalytics = getAll.reduce((result, card) => {
       const priority = card.priority || "Unknown";
       result[priority] = (result[priority] || 0) + 1;
@@ -83,6 +88,7 @@ cardRouter.get("/analytics", authorization, async (req, res) => {
       priorityAnalytics,
       cardsWithDueDate,
       statusAnalytics,
+      completedTasks,
     });
   } catch (error) {
     console.error(error);

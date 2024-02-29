@@ -1,15 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import styles from "./dashboard.module.css";
 import { format } from "date-fns";
 import Arrow from "..//../assets/Vector 14.svg";
-// import toast, { Toaster } from "react-hot-toast";
 import CardBox from "../../components/cards/CardBox";
-import userApi from "../../apis/UserApi";
+import { useAppContext } from "../../components/layouts/AppLayout";
 function Dashboard() {
   const currentDate = format(new Date(), "do MMM, yyyy");
   const [dropDown, setDropDown] = useState(false);
-  const [userName, setUserName] = useState("");
   const [selectedFilter, setSelectedOption] = useState("Today");
+  const { username } = useAppContext();
   const handleDropDown = () => {
     setDropDown(!dropDown);
   };
@@ -23,24 +22,11 @@ function Dashboard() {
     setDropDown(false);
     return option;
   };
-  const getUserData = async () => {
-    try {
-      const response = await userApi.verifyToken();
-      setUserName(response.name);
-    } catch (error) {
-      console.error("Error fetching user data:", error.message);
-    }
-  };
-
-  useEffect(() => {
-    getUserData();
-  }, []);
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* <Toaster position={"top-center"} reverseOrder="false" /> */}
       <p style={{ fontSize: "18px", fontWeight: "500" }}>
-        Welcome {userName}!{}
+        Welcome {username}!{}
       </p>
       <p className={styles.date}>{currentDate}</p>
       <div

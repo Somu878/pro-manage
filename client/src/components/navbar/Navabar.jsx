@@ -78,7 +78,6 @@ function Navabar() {
             activeLink === "analytics" ? styles.activeLink : ""
           }`}
         >
-          {/* <img src={analytics} alt="analytics" /> */}
           <GoDatabase size={"23px"} color="#707070" />
           <p>Analytics</p>
         </Link>
@@ -88,7 +87,6 @@ function Navabar() {
             activeLink === "settings" ? styles.activeLink : ""
           }`}
         >
-          {/* <img src={settings} alt="settings" /> */}
           <FiSettings size={"23px"} color="#707070" />
           <p>Settings</p>
         </Link>

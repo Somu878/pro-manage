@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Banner from "../../components/banner/Banner";
 import { MdOutlineLocalPostOffice } from "react-icons/md";
 import { CiUser, CiLock } from "react-icons/ci";
 import { FiEye, FiEyeOff } from "react-icons/fi";

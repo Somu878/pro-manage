@@ -25,7 +25,7 @@ function Analytics() {
             <li>{analytics?.statusAnalytics["backlog"] || 0}</li>
             <li>{analytics?.statusAnalytics["todo"] || 0}</li>
             <li>{analytics?.statusAnalytics["progress"] || 0}</li>
-            <li>{analytics?.statusAnalytics["done"] || 0}</li>
+            <li>{analytics?.completedTasks || 0}</li>
           </ul>
         </div>
         <div className={styles.box2}>

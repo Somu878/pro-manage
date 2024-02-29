@@ -4,11 +4,13 @@ import { CiLock, CiUser } from "react-icons/ci";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import toast, { Toaster } from "react-hot-toast";
 import { updateUser } from "./../../apis/UpdateAuthAPi";
+import { useAppContext } from "../../components/layouts/AppLayout";
 function Settings() {
+  const { username } = useAppContext();
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [updatedData, setUpdatedData] = useState({
-    name: "",
+    name: username,
     oldPassword: "",
     newPassword: "",
   });
@@ -50,7 +52,7 @@ function Settings() {
           updatedData.oldPassword,
           updatedData.newPassword
         );
-        console.log(response);
+        toast.success("Profile data updated");
       } catch (error) {
         console.log(error);
       }

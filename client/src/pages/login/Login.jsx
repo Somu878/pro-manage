@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { MdOutlineLocalPostOffice } from "react-icons/md";
 import { CiLock } from "react-icons/ci";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import Banner from "../../components/banner/Banner";
 import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
 import { LoginUser } from "../../apis/AuthApi";

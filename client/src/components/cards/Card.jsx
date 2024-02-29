@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./card.module.css";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import { TbDots } from "react-icons/tb";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { GoDotFill } from "react-icons/go";
 import Modal from "react-modal";
 import { format } from "date-fns";
@@ -23,6 +23,7 @@ function Card({
   const [showTasks, setShowTasks] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  // const [tasks, setTasks] = useState(initialTasks);
   const customStyles = {
     content: {
       top: "50%",
@@ -106,9 +107,21 @@ function Card({
     navigator.clipboard.writeText(textToCopy).then(() => {
       setShowMenu(false);
       toast.success("Link copied to Clipboard");
-      setTimeout(() => setCopied(false), 2000);
     });
   };
+  // const updateTaskStatus = async (taskId, isDone) => {
+  //   try {
+  //     const updatedTasks = tasks.map((task) =>
+  //       task._id === taskId ? { ...task, isDone } : task
+  //     );
+  //     setTasks(updatedTasks);
+  // console.log(tasks);
+  // triggerReFetch();
+  //   } catch (error) {
+  //     console.error("Error updating task status:", error);
+  //     toast.error("Failed to update task status");
+  //   }
+  // };
   return (
     <div className={styles.card}>
       <div className={styles.cardGroup}>
@@ -189,6 +202,7 @@ function Card({
                 id={`task-${task._id}`}
                 checked={task.isDone}
                 onChange={() => {}}
+                // updateTaskStatus(task._id, !task.isDone)
               />
               <label htmlFor={`task-${task._id}`}>{task?.content}</label>
             </div>

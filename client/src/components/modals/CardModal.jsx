@@ -26,6 +26,7 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
   const [tasks, setTasks] = useState([]);
   const [showCalender, setShowCalender] = useState(false);
   const [selectedPriority, setSelectedPriority] = useState(null);
+
   const [cardData, setCardData] = useState({
     title: "",
     priority: null,
