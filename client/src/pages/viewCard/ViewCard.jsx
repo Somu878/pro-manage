@@ -7,6 +7,7 @@ import cardApi from "..//../apis/CardApi";
 import { format } from "date-fns";
 function ViewCard() {
   const [cardData, setCardData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { cardId } = useParams();
   const priorities = {
     high: {
@@ -26,6 +27,7 @@ function ViewCard() {
   const fetchCardData = async () => {
     const response = await cardApi.getCard(cardId);
     setCardData(response.data);
+    setLoading(false);
   };
   useEffect(() => {
     fetchCardData();

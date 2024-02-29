@@ -59,21 +59,26 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
   };
   const handleSave = async (e) => {
     e.preventDefault();
-    const tasksWithoutId = tasks.map(({ _id, ...rest }) => ({
-      ...rest,
-    }));
-    await setCardData((prevData) => ({
-      ...prevData,
-      tasks: tasksWithoutId,
-    }));
+
+    const updatedCardData = {
+      ...cardData,
+      tasks: tasks.map((task) => ({
+        content: task.content,
+        isDone: task.isDone,
+      })),
+    };
+    setCardData(updatedCardData);
 
     if (mode === "edit") {
-      await handleEditCard();
+      await handleEditCard(updatedCardData);
+      trigger;
     } else {
-      handleAdd();
+      await handleAdd(updatedCardData);
     }
+
     handleModelClose();
   };
+
   const fetchInitialCardData = async () => {
     try {
       const response = await cardApi.getCard(cardId);
@@ -95,7 +100,7 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
       fetchInitialCardData();
     }
   }, [mode, cardId]);
-  const handleEditCard = async () => {
+  const handleEditCard = async (cardData) => {
     try {
       const response = await cardApi.updateCard(cardId, cardData);
       trigger;
@@ -104,8 +109,8 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
       console.log(error);
     }
   };
-  const handleAdd = async () => {
-    const response = await cardApi.addCard(cardData);
+  const handleAdd = async (cardData) => {
+    await cardApi.addCard(cardData);
     toast.success("New card added successfully");
   };
   return (

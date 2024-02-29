@@ -25,8 +25,8 @@
 .Icon1 {
   z-index: 2;
   position: absolute;
-  top: 31%;
-  left: 1%;
+  margin-top: 10px;
+  left: 1.5%;
   color: #828282;
 }
 .Icon2,
@@ -34,7 +34,7 @@
 .eyeOnIcon1 {
   z-index: 2;
   position: absolute;
-  top: 49.5%;
+  margin-top: 11px;
   left: 1.5%;
   color: #828282;
 }
@@ -43,7 +43,7 @@
 .eyeOnIcon2 {
   z-index: 2;
   position: absolute;
-  top: 68.5%;
+  margin-top: 11px;
   left: 1.5%;
   color: #828282;
 }

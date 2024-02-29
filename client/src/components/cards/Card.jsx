@@ -86,9 +86,12 @@ function Card({
     return currentDate > dueDateObject;
   };
   const dueDateStyle = {
-    fontSize: "13px",
+    fontSize: "10px",
     fontWeight: "600",
-    color: isDueDatePassed(dueDate) ? "red" : "inherit",
+    color: "white",
+    border: "none",
+    borderRadius: "7px",
+    background: isDueDatePassed(dueDate) ? "#CF3636" : "inherit",
   };
   const CardPriority = priorities[priority];
   const handleDeleteCard = async (cardId) => {
@@ -120,9 +123,6 @@ function Card({
             size={"23px"}
             onClick={() => {
               setShowMenu(!showMenu);
-              setTimeout(() => {
-                setShowMenu(false);
-              }, 3000);
             }}
           />
           {showMenu ? (
@@ -181,14 +181,7 @@ function Card({
         </div>
       </div>
       {showTasks && collapse ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            marginBottom: "15px",
-          }}
-        >
+        <div className={styles.tasksContainer}>
           {tasks.map((task) => (
             <div key={task._id} className={styles.taskItem}>
               <input
@@ -207,7 +200,9 @@ function Card({
 
       <div className={styles.cardGroup} style={{ marginTop: "10px" }}>
         {dueDate ? (
-          <div style={dueDateStyle}>{format(new Date(dueDate), "do MMM")}</div>
+          <button style={dueDateStyle}>
+            {format(new Date(dueDate), "do MMM")}
+          </button>
         ) : (
           <span> </span>
         )}
