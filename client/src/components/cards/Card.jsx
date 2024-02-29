@@ -112,9 +112,9 @@ function Card({
   return (
     <div className={styles.card}>
       <div className={styles.cardGroup}>
-        <div style={{ display: "flex", fontSize: "12.5px" }}>
-          <div style={{}}>
-            <GoDotFill color={CardPriority.color} size={"18px"} />
+        <div style={{ display: "flex", fontSize: "12px" }}>
+          <div>
+            <GoDotFill color={CardPriority.color} size={"16px"} />
           </div>
           {CardPriority.name}
         </div>
@@ -158,7 +158,7 @@ function Card({
       </div>
 
       <div
-        style={{ fontWeight: "450", fontSize: "18px", marginBottom: "15px" }}
+        style={{ fontWeight: "450", fontSize: "17.5px", marginBottom: "15px" }}
       >
         {title}
       </div>

@@ -65,10 +65,11 @@ function Register() {
 
       if (response?.status === 200) {
         navigate("/");
-        toast.success("Login Successful");
+        toast.success("Registration Successful");
       }
       if (response.status === 202) {
         toast.error("Email already registered,Please login!");
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);
@@ -78,9 +79,6 @@ function Register() {
   return (
     <div>
       <Toaster position="top-center" reverseOrder={false} />
-      {/* <div>
-        <Banner />
-      </div> */}
       <div className={styles.registerContainer}>
         <p>Register</p>
         <form onSubmit={handleRegister}>

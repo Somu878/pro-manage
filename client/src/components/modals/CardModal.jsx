@@ -74,6 +74,7 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
       trigger;
     } else {
       await handleAdd(updatedCardData);
+      trigger;
     }
 
     handleModelClose();

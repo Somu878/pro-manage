@@ -11,7 +11,7 @@
   border: 8px solid transparent;
   border-top: 10px solid #17a2b8;
   border-radius: 50%;
-  animation: loadingAnimation 0.5s linear infinite;
+  animation: loadingAnimation 0.3s linear infinite;
   margin: auto;
 }
 
