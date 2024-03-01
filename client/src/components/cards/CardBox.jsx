@@ -8,11 +8,10 @@ import CardModal from "../modals/CardModal";
 import toast, { Toaster } from "react-hot-toast";
 import cardApi from "../../apis/CardApi";
 
-function CardBox({ status, filter }) {
+function CardBox({ status, filter, refresh, refreshFunc }) {
   const [collapse, setCollapse] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [cardsData, setCardsData] = useState(null);
-  const [trigger, setTrigger] = useState(false);
   const customStyles = {
     content: {
       top: "50%",
@@ -41,7 +40,7 @@ function CardBox({ status, filter }) {
   };
   useEffect(() => {
     fetchCardsData();
-  }, [filter, status, trigger, modalOpen]);
+  }, [filter, status, refresh, modalOpen]);
 
   return (
     <div className={styles.cardBox}>
@@ -68,10 +67,7 @@ function CardBox({ status, filter }) {
           onRequestClose={() => setModalOpen(false)}
           ariaHideApp={false}
         >
-          <CardModal
-            trigger={() => fetchCardsData()}
-            handleModelClose={() => setModalOpen(false)}
-          />
+          <CardModal handleModelClose={() => setModalOpen(false)} />
         </Modal>
       </div>
       <div className={styles.cardList}>
@@ -87,7 +83,7 @@ function CardBox({ status, filter }) {
               status={card.status}
               collapse={collapse}
               handleCollapse={() => setCollapse(true)}
-              triggerReFetch={() => setTrigger(!trigger)}
+              triggerReFetch={() => refreshFunc()}
             />
           ))}
       </div>

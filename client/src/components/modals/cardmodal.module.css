@@ -115,3 +115,8 @@
   border: none;
   color: white;
 }
+.datepicker {
+  position: absolute;
+  top: 25%;
+  left: 30%;
+}

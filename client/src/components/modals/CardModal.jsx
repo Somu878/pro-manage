@@ -4,6 +4,9 @@ import { GoDotFill } from "react-icons/go";
 import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
 import cardApi from "..//../apis/CardApi";
+import DatePicker from "react-datepicker";
+import { format, addDays, subDays } from "date-fns";
+import "react-datepicker/dist/react-datepicker.css";
 function CardModal({ mode, cardId, handleModelClose, trigger }) {
   const priorities = {
     high: {
@@ -24,9 +27,10 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
   };
   const prioritiesArray = Object.values(priorities);
   const [tasks, setTasks] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [showCalender, setShowCalender] = useState(false);
+  const [dueDateButtonText, setDueDateButtonText] = useState("Select Due Date");
   const [selectedPriority, setSelectedPriority] = useState(null);
-
   const [cardData, setCardData] = useState({
     title: "",
     priority: null,
@@ -67,9 +71,9 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
         content: task.content,
         isDone: task.isDone,
       })),
+      dueDate: selectedDate ? format(selectedDate, "yyyy-MM-dd") : null,
     };
     setCardData(updatedCardData);
-
     if (mode === "edit") {
       await handleEditCard(updatedCardData);
       trigger;
@@ -88,8 +92,10 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
       setCardData((prevData) => ({
         ...prevData,
         title: fetchedData.title,
+        status: fetchedData.status,
         tasks: fetchedData.tasks || [],
-        priority: fetchedData.priority || null,
+        priority: fetchedData.priority,
+        dueDate: fetchedData.dueDate || null,
       }));
       setSelectedPriority(fetchedData.priority);
       setTasks(fetchedData.tasks);
@@ -203,11 +209,37 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
       <div className={styles.btnGroup}>
         <button
           className={styles.dueDateBtn}
-          onClick={() => setShowCalender(!showCalender)}
+          onClick={(e) => {
+            e.preventDefault();
+            setShowCalender(!showCalender);
+          }}
         >
-          Select Due Date
+          {dueDateButtonText}
         </button>
         {showCalender ? (
+          <div className={styles.datepicker}>
+            <DatePicker
+              inline
+              dateFormat="dd/MM/yyyy"
+              selected={selectedDate}
+              excludeDateIntervals={[
+                {
+                  start: subDays(new Date(), 100),
+                  end: addDays(new Date(), 0),
+                },
+              ]}
+              onChange={(date) => {
+                setDueDateButtonText(format(date, "dd/MM/yyyy"));
+                setSelectedDate(date);
+                setShowCalender(false);
+              }}
+            />
+          </div>
+        ) : (
+          ""
+        )}
+        {/* 
+        {/* {showCalender ? (
           <input
             type="date"
             name="dueDate"
@@ -217,7 +249,7 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
           />
         ) : (
           <></>
-        )}
+        )} */}
         <div style={{ display: "flex", gap: "20px" }}>
           <button
             className={styles.cancelBtn}

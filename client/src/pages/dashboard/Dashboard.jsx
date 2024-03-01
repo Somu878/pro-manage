@@ -7,6 +7,7 @@ import { useAppContext } from "../../components/layouts/AppLayout";
 function Dashboard() {
   const currentDate = format(new Date(), "do MMM, yyyy");
   const [dropDown, setDropDown] = useState(false);
+  const [refresh, setRefresh] = useState(0);
   const [selectedFilter, setSelectedOption] = useState("Today");
   const { username } = useAppContext();
   const handleDropDown = () => {
@@ -14,7 +15,13 @@ function Dashboard() {
   };
   const renderCardBoxes = () => {
     return ["Backlog", "To do", "Progress", "Done"].map((statusName) => (
-      <CardBox key={statusName} status={statusName} filter={selectedFilter} />
+      <CardBox
+        key={statusName}
+        status={statusName}
+        filter={selectedFilter}
+        refresh={refresh}
+        refreshFunc={() => setRefresh(refresh + 1)}
+      />
     ));
   };
   const handleOptionChange = (option) => {

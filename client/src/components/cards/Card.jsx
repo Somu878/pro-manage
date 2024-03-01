@@ -8,6 +8,7 @@ import Modal from "react-modal";
 import { format } from "date-fns";
 import CardModal from "../modals/CardModal";
 import cardApi from "../../apis/CardApi";
+
 function Card({
   id,
   priority,
@@ -89,11 +90,22 @@ function Card({
   const dueDateStyle = {
     fontSize: "10px",
     fontWeight: "600",
-    color: "white",
+    color:
+      status === "done"
+        ? "black"
+        : isDueDatePassed(dueDate)
+        ? "white"
+        : "#5a5a5a",
     border: "none",
     borderRadius: "7px",
-    background: isDueDatePassed(dueDate) ? "#CF3636" : "inherit",
+    background:
+      status === "done"
+        ? "#DBDBDB"
+        : isDueDatePassed(dueDate)
+        ? "#CF3636"
+        : "#DBDBDB",
   };
+
   const CardPriority = priorities[priority];
   const handleDeleteCard = async (cardId) => {
     const response = await cardApi.deletecard(cardId);
@@ -150,7 +162,11 @@ function Card({
                 <CardModal
                   mode={"edit"}
                   cardId={id}
-                  handleModelClose={() => setShowEditModal(false)}
+                  handleModelClose={() => {
+                    triggerReFetch();
+                    setShowEditModal(false);
+                    setShowMenu(false);
+                  }}
                 />
               </Modal>
               <div onClick={handleCopyToClipboard}>Share</div>
@@ -200,7 +216,7 @@ function Card({
               <input
                 type="checkbox"
                 id={`task-${task._id}`}
-                checked={task.isDone}
+                checked={status === "done" || task.isDone}
                 onChange={() => {}}
                 // updateTaskStatus(task._id, !task.isDone)
               />
