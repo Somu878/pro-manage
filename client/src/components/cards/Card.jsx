@@ -13,7 +13,7 @@ function Card({
   id,
   priority,
   title,
-  tasks,
+  tasks: initialTasks,
   dueDate,
   status,
   collapse,
@@ -24,7 +24,8 @@ function Card({
   const [showTasks, setShowTasks] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  // const [tasks, setTasks] = useState(initialTasks);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [tasks, setTasks] = useState(initialTasks);
   const customStyles = {
     content: {
       top: "50%",
@@ -37,6 +38,20 @@ function Card({
       padding: "30px",
       borderRadius: "20px",
       transform: "translate(-50%, -50%)",
+    },
+  };
+  const customStyles2 = {
+    content: {
+      width: "330px",
+      height: "180px",
+      top: "40%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      borderRadius: "7px",
+      transform: "translate(-50%, -50%)",
+      display: "flex",
+      flexDirection: "column",
     },
   };
 
@@ -63,7 +78,11 @@ function Card({
   };
   const updateStatus = async (status) => {
     try {
-      await cardApi.updateStatus(id, { status });
+      let updatedTasks = tasks;
+      if (status === "done") {
+        updatedTasks = tasks.map((task) => ({ ...task, isDone: true }));
+      }
+      await cardApi.updateStatus(id, { status, tasks: updatedTasks });
       triggerReFetch();
     } catch (error) {
       console.log(error);
@@ -92,7 +111,7 @@ function Card({
     fontWeight: "600",
     color:
       status === "done"
-        ? "black"
+        ? "white"
         : isDueDatePassed(dueDate)
         ? "white"
         : "#5a5a5a",
@@ -100,7 +119,7 @@ function Card({
     borderRadius: "7px",
     background:
       status === "done"
-        ? "#DBDBDB"
+        ? "#63C05B"
         : isDueDatePassed(dueDate)
         ? "#CF3636"
         : "#DBDBDB",
@@ -121,19 +140,19 @@ function Card({
       toast.success("Link copied to Clipboard");
     });
   };
-  // const updateTaskStatus = async (taskId, isDone) => {
-  //   try {
-  //     const updatedTasks = tasks.map((task) =>
-  //       task._id === taskId ? { ...task, isDone } : task
-  //     );
-  //     setTasks(updatedTasks);
-  // console.log(tasks);
-  // triggerReFetch();
-  //   } catch (error) {
-  //     console.error("Error updating task status:", error);
-  //     toast.error("Failed to update task status");
-  //   }
-  // };
+  const updateTaskStatus = async (taskId, isDone) => {
+    try {
+      const updatedTasks = tasks.map((task) =>
+        task._id === taskId ? { ...task, isDone } : task
+      );
+      setTasks(updatedTasks);
+      await cardApi.updateStatus(id, { tasks: updatedTasks });
+      // triggerReFetch();
+    } catch (error) {
+      console.error("Error updating task status:", error);
+      toast.error("Failed to update task status");
+    }
+  };
   return (
     <div className={styles.card}>
       <div className={styles.cardGroup}>
@@ -172,13 +191,29 @@ function Card({
               <div onClick={handleCopyToClipboard}>Share</div>
               <div
                 style={{ color: "red" }}
-                onClick={() => {
-                  handleDeleteCard(id);
-                  setShowMenu(false);
-                }}
+                onClick={() => setDeleteModal(true)}
               >
                 Delete
               </div>
+              <Modal style={customStyles2} isOpen={deleteModal}>
+                <h3>Are you sure you want to delete?</h3>
+                <button
+                  className={styles.cancelBtn}
+                  onClick={() => {
+                    setDeleteModal(false);
+                    setShowMenu(false);
+                    handleDeleteCard(id);
+                  }}
+                >
+                  Yes,Delete
+                </button>
+                <button
+                  className={styles.deleteBtn}
+                  onClick={() => setDeleteModal(false)}
+                >
+                  Cancel
+                </button>
+              </Modal>
             </div>
           ) : (
             <></>
@@ -216,9 +251,8 @@ function Card({
               <input
                 type="checkbox"
                 id={`task-${task._id}`}
-                checked={status === "done" || task.isDone}
-                onChange={() => {}}
-                // updateTaskStatus(task._id, !task.isDone)
+                checked={task.isDone}
+                onChange={() => updateTaskStatus(task._id, !task.isDone)}
               />
               <label htmlFor={`task-${task._id}`}>{task?.content}</label>
             </div>

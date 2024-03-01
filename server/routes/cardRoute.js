@@ -174,7 +174,7 @@ cardRouter.patch("/update/:cardId", authorization, async (req, res) => {
 cardRouter.patch("/update/status/:cardId", authorization, async (req, res) => {
   try {
     const { cardId } = req.params;
-    const { status } = req.body;
+    const { status, tasks } = req.body;
 
     if (!cardId) {
       return res.status(400).json({
@@ -191,17 +191,15 @@ cardRouter.patch("/update/status/:cardId", authorization, async (req, res) => {
     }
     if (status) {
       existingCard.status = status;
-      await existingCard.save();
-      return res.status(200).json({
-        status: "success",
-        message: "Card status updated successfully",
-      });
-    } else {
-      return res.status(400).json({
-        status: "failed",
-        error: "Status is required for updating",
-      });
     }
+    if (tasks) {
+      existingCard.tasks = tasks;
+    }
+    await existingCard.save();
+    return res.status(200).json({
+      status: "success",
+      message: "Card updated successfully",
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal server error");

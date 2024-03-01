@@ -33,7 +33,8 @@ function Dashboard() {
   return (
     <div className={styles.dashboardContainer}>
       <p style={{ fontSize: "18px", fontWeight: "500" }}>
-        Welcome {username}!{}
+        Welcome! {username}
+        {}
       </p>
       <p className={styles.date}>{currentDate}</p>
       <div

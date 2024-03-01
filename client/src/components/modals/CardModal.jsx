@@ -184,6 +184,7 @@ function CardModal({ mode, cardId, handleModelClose, trigger }) {
                 <input
                   type="text"
                   className={styles.taskInput}
+                  placeholder="Add Task Here"
                   id={`task-content-${task._id}`}
                   value={task.content}
                   onChange={(e) =>
